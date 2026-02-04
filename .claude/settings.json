@@ -1,0 +1,185 @@
+{
+  "description": "Multi-Agent Claude Code Configuration Template",
+  "version": "1.0.0",
+
+  "permissions": {
+    "allow": [
+      "Read",
+      "Glob",
+      "Grep",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:stackoverflow.com)",
+
+      "Bash(npm run:*)",
+      "Bash(npm test:*)",
+      "Bash(npm run lint:*)",
+      "Bash(npm run build:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npx jest:*)",
+      "Bash(npx vitest:*)",
+
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git fetch:*)",
+      "Bash(git branch:*)",
+      "Bash(git checkout:*)",
+      "Bash(git blame:*)",
+
+      "Bash(curl:*)",
+      "Bash(ls:*)",
+      "Bash(tree:*)",
+      "Bash(wc:*)",
+      "Bash(cat:*)",
+      "Bash(find:*)",
+      "Bash(grep:*)"
+    ],
+
+    "deny": [
+      "Bash(rm -rf:*)",
+      "Bash(rm -r:*)",
+      "Bash(git push:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(git checkout .:*)",
+      "Bash(git restore .:*)",
+      "Bash(git clean:*)",
+      "Bash(git rebase:*)",
+      "Read(.env)",
+      "Read(**/.env.*)",
+      "Read(**/secrets/**)",
+      "Read(**/*secret*)",
+      "Read(**/*credential*)"
+    ]
+  },
+
+  "agents": {
+    "architect": {
+      "description": "System design, API contracts, module planning",
+      "model": "opus",
+      "proactive": true,
+      "permissions": {
+        "allow": ["Read", "Grep", "Glob", "WebSearch"],
+        "deny": ["Edit", "Write", "Bash"]
+      }
+    },
+    "researcher": {
+      "description": "Fast codebase exploration, pattern discovery",
+      "model": "haiku",
+      "proactive": true,
+      "permissions": {
+        "allow": ["Read", "Grep", "Glob"],
+        "deny": ["Edit", "Write", "Bash"]
+      }
+    },
+    "supervisor": {
+      "description": "Track management, sub-agent coordination",
+      "model": "sonnet",
+      "proactive": false,
+      "permissions": {
+        "allow": ["Read", "Grep", "Glob", "Task"],
+        "deny": ["Edit", "Write"]
+      }
+    },
+    "prompt-writer": {
+      "description": "Generate context-optimized prompts for sub-agents",
+      "model": "haiku",
+      "proactive": false,
+      "permissions": {
+        "allow": ["Read", "Grep", "Glob"],
+        "deny": ["Edit", "Write", "Bash"]
+      }
+    },
+    "backend-impl": {
+      "description": "Backend code implementation",
+      "model": "sonnet",
+      "proactive": false
+    },
+    "frontend-impl": {
+      "description": "Frontend code implementation",
+      "model": "sonnet",
+      "proactive": false
+    },
+    "infra-impl": {
+      "description": "Infrastructure and deployment",
+      "model": "sonnet",
+      "proactive": false
+    },
+    "tester": {
+      "description": "Test writing and execution",
+      "model": "sonnet",
+      "proactive": false
+    },
+    "reviewer": {
+      "description": "Code review and quality checks",
+      "model": "sonnet",
+      "proactive": true
+    },
+    "debugger": {
+      "description": "Debugging and troubleshooting",
+      "model": "sonnet",
+      "proactive": false
+    },
+    "security": {
+      "description": "Security audit and vulnerability detection",
+      "model": "opus",
+      "proactive": true
+    },
+    "work-recorder": {
+      "description": "Continuous work documentation",
+      "model": "haiku",
+      "proactive": false
+    },
+    "code-quality-auditor": {
+      "description": "Deep code quality analysis",
+      "model": "opus",
+      "proactive": false
+    }
+  },
+
+  "workflows": {
+    "feature-implementation": {
+      "description": "Full feature implementation workflow",
+      "steps": [
+        { "agent": "architect", "action": "design" },
+        { "agent": "researcher", "action": "find-patterns", "parallel": true },
+        { "agent": "backend-impl", "action": "implement", "condition": "has-backend" },
+        { "agent": "frontend-impl", "action": "implement", "condition": "has-frontend" },
+        { "agent": "tester", "action": "write-tests" },
+        { "agent": "reviewer", "action": "review" },
+        { "agent": "security", "action": "audit", "condition": "is-sensitive" }
+      ]
+    },
+    "bug-fix": {
+      "description": "Bug fix workflow",
+      "steps": [
+        { "agent": "debugger", "action": "diagnose" },
+        { "agent": "backend-impl", "action": "fix", "condition": "backend-issue" },
+        { "agent": "frontend-impl", "action": "fix", "condition": "frontend-issue" },
+        { "agent": "tester", "action": "add-regression-test" },
+        { "agent": "reviewer", "action": "verify-fix" }
+      ]
+    },
+    "code-review": {
+      "description": "Code review workflow",
+      "steps": [
+        { "agent": "reviewer", "action": "review" },
+        { "agent": "security", "action": "security-check" }
+      ]
+    }
+  },
+
+  "env": {
+    "AGENT_MODE": "orchestrated"
+  },
+
+  "thinking": {
+    "triggers": {
+      "standard": ["think"],
+      "extended": ["think hard", "think carefully"],
+      "maximum": ["think harder", "ultrathink"]
+    }
+  }
+}

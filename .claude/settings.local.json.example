@@ -1,0 +1,16 @@
+{
+  "description": "Personal settings overrides - copy to settings.local.json and customize",
+  "note": "settings.local.json should be gitignored",
+
+  "permissions": {
+    "allow": [
+      "// Add developer-specific permissions here",
+      "Bash(your-custom-command:*)"
+    ]
+  },
+
+  "env": {
+    "DEVELOPER_NAME": "your-name",
+    "PREFERRED_MODEL": "sonnet"
+  }
+}

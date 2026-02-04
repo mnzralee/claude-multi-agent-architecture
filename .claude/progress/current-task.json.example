@@ -1,0 +1,82 @@
+{
+  "description": "Example task tracking file - copy to current-task.json",
+  "note": "This file tracks cross-session state for complex tasks",
+
+  "currentTask": {
+    "id": "TASK-001",
+    "title": "User Authentication Module",
+    "status": "in_progress",
+    "startedAt": "2024-01-15T10:00:00Z",
+    "lastUpdatedAt": "2024-01-16T14:30:00Z"
+  },
+
+  "features": [
+    {
+      "id": "AUTH-001",
+      "name": "Login flow",
+      "status": "completed",
+      "completedAt": "2024-01-15T12:00:00Z"
+    },
+    {
+      "id": "AUTH-002",
+      "name": "Registration flow",
+      "status": "in_progress",
+      "progress": "70%",
+      "blockers": []
+    },
+    {
+      "id": "AUTH-003",
+      "name": "Password reset",
+      "status": "pending",
+      "dependencies": ["AUTH-002"]
+    },
+    {
+      "id": "AUTH-004",
+      "name": "Email verification",
+      "status": "pending",
+      "dependencies": ["AUTH-002"]
+    }
+  ],
+
+  "workPackages": [
+    {
+      "id": "WP-01",
+      "description": "Create user entity and repository",
+      "status": "completed",
+      "assignedAgent": "backend-impl",
+      "completedAt": "2024-01-15T11:00:00Z"
+    },
+    {
+      "id": "WP-02",
+      "description": "Implement login endpoint",
+      "status": "completed",
+      "assignedAgent": "backend-impl",
+      "completedAt": "2024-01-15T12:00:00Z"
+    },
+    {
+      "id": "WP-03",
+      "description": "Implement registration endpoint",
+      "status": "in_progress",
+      "assignedAgent": "backend-impl",
+      "startedAt": "2024-01-16T10:00:00Z"
+    }
+  ],
+
+  "decisions": [
+    {
+      "id": "DEC-001",
+      "title": "JWT vs Session tokens",
+      "decision": "JWT",
+      "rationale": "Stateless authentication better for microservices",
+      "madeAt": "2024-01-15T10:30:00Z"
+    }
+  ],
+
+  "blockers": [],
+
+  "nextSteps": [
+    "Complete registration endpoint",
+    "Add input validation",
+    "Write unit tests for auth service"
+  ]
+}
