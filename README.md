@@ -8,7 +8,7 @@ A production-grade, spec-conformant starter kit for building serious software wi
 
 - **19 specialized subagents** in spec-conformant flat files (`.claude/agents/<name>.md`), each with explicit model routing and a minimal tool set: architect, researcher, supervisor, prompt-writer, backend-impl, frontend-impl, infra-impl, docker-deploy, db-specialist, cqrs-specialist, tester, e2e-tester, reviewer, debugger, security, code-quality-auditor, evaluator, watchdog, work-recorder.
 - **18 enforcement rules** in `.claude/rules/`, including the evidence-driven `ai-agent-engineering` discipline, the `ai-orchestration-decision-gate`, clean architecture, TDD, complexity limits, anti-entropy, security standards, and the untrusted-content boundary.
-- **17 skills** invoked with `/name`: plan-feature, multi-agent-orchestration, evaluator-optimizer, ralph-loop, tdd-workflow, commit, pr, review, systematic-debugging, verification, and more.
+- **18 skills** invoked with `/name`: plan-feature, multi-agent-orchestration, review-board (the multi-wave Software Engineering Review Board), evaluator-optimizer, ralph-loop, tdd-workflow, commit, pr, review, systematic-debugging, verification, and more.
 - **Real, executable hooks**: a `PreToolUse` file guard that blocks secret writes, a `PostToolUse` auto-format pass, and an opt-in `Stop` checkpoint. Wired correctly so they actually fire.
 - **A context/ pack, governance gates, work-record templates, and a review-board prompt** for multi-agent plan validation.
 - **Cross-tool `AGENTS.md`** so the same conventions carry to Cursor, Codex, Gemini, and others.
@@ -73,7 +73,7 @@ claude-multi-agent-architecture/
     settings.json               # safe-by-default permissions + real hooks
     settings.local.json.example # personal/machine overrides (gitignored)
     agents/<name>.md            # 19 subagents, flat files, YAML frontmatter
-    skills/<name>/SKILL.md      # 17 skills
+    skills/<name>/SKILL.md      # 18 skills
     rules/<name>.md             # 18 enforcement rules
     hooks/                      # file-guard.py, auto-format.py, checkpoint.sh/.ps1, hooks.json
     prompts/review-board.md     # multi-agent review board

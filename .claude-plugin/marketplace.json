@@ -11,7 +11,7 @@
     {
       "name": "claude-multi-agent-architecture",
       "source": "./",
-      "description": "Production-grade multi-agent Claude Code starter kit: 19 subagents, 20 rules, 17 skills, real hooks, evidence-driven orchestration discipline."
+      "description": "Production-grade multi-agent Claude Code starter kit: 19 subagents, 18 rules, 18 skills, real hooks, evidence-driven orchestration discipline."
     }
   ]
 }

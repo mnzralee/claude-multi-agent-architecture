@@ -1,7 +1,7 @@
 {
   "name": "claude-multi-agent-architecture",
   "version": "2.0.0",
-  "description": "A production-grade, spec-conformant multi-agent Claude Code starter kit: 19 specialized subagents, 20 enforcement rules, 17 skills, real hooks, and an evidence-driven orchestration discipline (prove-with-artifacts, single-writer/many-readers, workflow-vs-agent decision gate).",
+  "description": "A production-grade, spec-conformant multi-agent Claude Code starter kit: 19 specialized subagents, 18 enforcement rules, 18 skills, real hooks, and an evidence-driven orchestration discipline (prove-with-artifacts, single-writer/many-readers, workflow-vs-agent decision gate).",
   "author": {
     "name": "Manazir Ali"
   },
