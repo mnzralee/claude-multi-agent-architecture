@@ -1,0 +1,39 @@
+# Claude Code local overrides (never commit machine-specific config)
+.claude/settings.local.json
+
+# Live progress + plan state (keep the .example/templates, ignore real runtime state)
+.claude/progress/*.json
+!.claude/progress/*.example
+.claude/locks/
+
+# Session work records are project history, not kit content.
+# The kit ships docs/workrecords/ empty (with .gitkeep). Adopters decide
+# whether to track their own work records; ignore them here by default.
+docs/workrecords/*.md
+
+# Dependencies and build output
+node_modules/
+dist/
+build/
+.next/
+out/
+coverage/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Logs and scratch
+*.log
+scratch/
+tmp/
