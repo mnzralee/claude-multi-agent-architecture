@@ -1,0 +1,100 @@
+{
+  "version": "1.0",
+  "description": "Machine-readable quality gate definitions. Referenced by hooks for deterministic enforcement.",
+  "gates": {
+    "pre-commit": {
+      "blocking": true,
+      "description": "Must pass before any commit is created",
+      "checks": [
+        {
+          "name": "no-any-types",
+          "description": "Forbid 'any' type in production TypeScript",
+          "pattern": ":\\s*any[;,\\s\\)]",
+          "exclude": ["*.spec.ts", "*.test.ts", "__tests__/**"]
+        },
+        {
+          "name": "no-ts-ignore",
+          "description": "Forbid @ts-ignore and @ts-expect-error",
+          "pattern": "@ts-ignore|@ts-expect-error",
+          "exclude": []
+        },
+        {
+          "name": "no-console-log",
+          "description": "Forbid console.log in production code",
+          "pattern": "console\\.log\\(",
+          "exclude": ["*.spec.ts", "*.test.ts", "__tests__/**", "scripts/**"]
+        },
+        {
+          "name": "no-hardcoded-secrets",
+          "description": "Detect hardcoded secrets and credentials",
+          "pattern": "(password|secret|api_key|apiKey|token)\\s*[=:]\\s*['\"][^'\"]{8,}['\"]",
+          "exclude": ["*.test.ts", "*.spec.ts", "*.example", "*.md"]
+        },
+        {
+          "name": "no-silent-catch",
+          "description": "Forbid empty catch blocks",
+          "pattern": "catch\\s*\\([^)]*\\)\\s*\\{\\s*\\}",
+          "exclude": []
+        }
+      ]
+    },
+    "pre-merge": {
+      "blocking": true,
+      "description": "Must pass before merging to shared branches",
+      "checks": [
+        {
+          "name": "type-check",
+          "description": "TypeScript compilation with strict mode",
+          "command": "npx tsc --noEmit"
+        },
+        {
+          "name": "tests-pass",
+          "description": "All tests must pass",
+          "command": "npm test"
+        },
+        {
+          "name": "lint-clean",
+          "description": "No linting errors",
+          "command": "npm run lint"
+        }
+      ]
+    },
+    "advisory": {
+      "blocking": false,
+      "description": "Should pass but won't block work",
+      "checks": [
+        {
+          "name": "coverage-minimum",
+          "description": "Test coverage should meet minimum threshold",
+          "threshold": 70,
+          "unit": "percent"
+        },
+        {
+          "name": "bundle-size",
+          "description": "Frontend bundle size within budget",
+          "threshold": "500kb",
+          "unit": "bytes"
+        },
+        {
+          "name": "dependency-audit",
+          "description": "No known vulnerabilities in production deps",
+          "command": "npm audit --production"
+        },
+        {
+          "name": "no-unused-imports",
+          "description": "No unused imports or variables",
+          "pattern": "is defined but never used",
+          "source": "tsc-output"
+        }
+      ]
+    }
+  },
+  "enforcement": {
+    "notes": [
+      "CLAUDE.md instructions are advisory (~80% compliance)",
+      "Hooks are deterministic (100% compliance)",
+      "This file is a machine-readable reference for hooks and CI",
+      "Anything that MUST always happen should be a hook, not a CLAUDE.md instruction"
+    ]
+  }
+}
