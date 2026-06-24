@@ -1,0 +1,19 @@
+{
+  "//": "Plugin-mode hook wiring. Used when this kit is installed as a Claude Code plugin (referenced by .claude-plugin/plugin.json). Mirrors the hooks block in .claude/settings.json but resolves paths via ${CLAUDE_PLUGIN_ROOT}. In scaffold mode (copying .claude/ into a project) the settings.json hooks block is what runs; this file is for plugin installs.",
+  "PreToolUse": [
+    {
+      "matcher": "Write|Edit|NotebookEdit",
+      "hooks": [
+        { "type": "command", "command": "python \"${CLAUDE_PLUGIN_ROOT}/.claude/hooks/file-guard.py\"" }
+      ]
+    }
+  ],
+  "PostToolUse": [
+    {
+      "matcher": "Write|Edit",
+      "hooks": [
+        { "type": "command", "command": "python \"${CLAUDE_PLUGIN_ROOT}/.claude/hooks/auto-format.py\"" }
+      ]
+    }
+  ]
+}

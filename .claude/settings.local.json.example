@@ -1,0 +1,37 @@
+{
+  "//": "Copy this file to settings.local.json (which is gitignored) and uncomment what your machine and project need. settings.local.json overrides settings.json and is never committed. This is where personal allowances and machine-specific paths belong, NOT in the shared settings.json.",
+
+  "//permissions": "Opt-in allowances your project needs. Add only what you use. Each entry below is an EXAMPLE; delete the ones you do not need.",
+  "permissions": {
+    "allow": [
+      "Bash(docker build:*)",
+      "Bash(docker compose:*)",
+      "Bash(kubectl get:*)",
+      "Bash(kubectl logs:*)",
+      "Bash(kubectl describe:*)",
+      "Bash(npx prisma generate:*)",
+      "Bash(npx prisma migrate:*)",
+      "Bash(npx playwright:*)",
+      "Bash(pnpm:*)",
+      "Bash(yarn:*)",
+      "Bash(go test:*)",
+      "Bash(go build:*)"
+    ]
+  },
+
+  "//env": "Machine-specific environment variables. Never put real secrets here; reference a secret manager instead.",
+  "env": {
+    "//EXAMPLE_API_BASE": "http://localhost:3000"
+  },
+
+  "//optional-checkpoint-hook": "The kit ships a Stop hook that git-snapshots your work so you can roll back. It is OFF by default because it auto-commits. To enable it, move the block below into a top-level hooks key in your settings.local.json. checkpoint.ps1 is the PowerShell variant for Windows without a POSIX shell.",
+  "//hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          { "type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/checkpoint.sh\"" }
+        ]
+      }
+    ]
+  }
+}
