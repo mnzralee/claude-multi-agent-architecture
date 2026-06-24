@@ -18,7 +18,7 @@ A production-grade, spec-conformant starter kit for building serious software wi
 ### Option A: clone-and-copy (any tool, zero install)
 
 ```bash
-git clone https://github.com/manazir-ali/claude-multi-agent-architecture
+git clone https://github.com/mnzralee/claude-multi-agent-architecture
 cp -r claude-multi-agent-architecture/.claude   /your/project/
 cp    claude-multi-agent-architecture/CLAUDE.md /your/project/
 cp    claude-multi-agent-architecture/AGENTS.md /your/project/
@@ -32,7 +32,7 @@ Then open `CLAUDE.md` and `AGENTS.md` and replace the `[CUSTOMIZE]` placeholders
 This repo ships a plugin manifest (`.claude-plugin/plugin.json`) and a marketplace (`.claude-plugin/marketplace.json`). Add the marketplace, then install:
 
 ```
-/plugin marketplace add manazir-ali/claude-multi-agent-architecture
+/plugin marketplace add mnzralee/claude-multi-agent-architecture
 /plugin install claude-multi-agent-architecture
 ```
 
