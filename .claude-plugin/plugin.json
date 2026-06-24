@@ -1,0 +1,24 @@
+{
+  "name": "claude-multi-agent-architecture",
+  "version": "2.0.0",
+  "description": "A production-grade, spec-conformant multi-agent Claude Code starter kit: 19 specialized subagents, 20 enforcement rules, 17 skills, real hooks, and an evidence-driven orchestration discipline (prove-with-artifacts, single-writer/many-readers, workflow-vs-agent decision gate).",
+  "author": {
+    "name": "Manazir Ali"
+  },
+  "homepage": "https://github.com/manazir-ali/claude-multi-agent-architecture",
+  "repository": "https://github.com/manazir-ali/claude-multi-agent-architecture",
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "multi-agent",
+    "orchestration",
+    "subagents",
+    "ai-engineering",
+    "tdd",
+    "clean-architecture",
+    "context-engineering"
+  ],
+  "agents": "./.claude/agents",
+  "skills": "./.claude/skills",
+  "hooks": "./.claude/hooks/hooks.json"
+}

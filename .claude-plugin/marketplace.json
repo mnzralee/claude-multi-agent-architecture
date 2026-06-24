@@ -1,0 +1,17 @@
+{
+  "name": "manazir-claude-kits",
+  "owner": {
+    "name": "Manazir Ali"
+  },
+  "metadata": {
+    "description": "Reusable Claude Code starter kits and multi-agent architectures.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "claude-multi-agent-architecture",
+      "source": "./",
+      "description": "Production-grade multi-agent Claude Code starter kit: 19 subagents, 20 rules, 17 skills, real hooks, evidence-driven orchestration discipline."
+    }
+  ]
+}
