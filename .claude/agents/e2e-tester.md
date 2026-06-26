@@ -114,4 +114,4 @@ Keep the table rows to one line each. Move all detail into the Blocking Issues a
 
 - `CLAUDE.md` -- project-level guidance and service topology [CUSTOMIZE: path if different]
 - `docs/testing.md` -- test strategy, coverage targets, and CI gate rules [CUSTOMIZE: add if present]
-- [Playwright MCP documentation](https://code.claude.com/docs/en/test-and-debug) -- Claude Code testing and debug guidance
+- [Playwright documentation](https://playwright.dev) -- end-to-end browser-automation patterns

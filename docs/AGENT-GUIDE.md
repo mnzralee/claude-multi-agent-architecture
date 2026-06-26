@@ -445,6 +445,106 @@ What do you need to do?
 
 ---
 
+### docker-deploy (Sonnet)
+
+**When to use:**
+- Building and shipping container images
+- Multi-stage builds and transitive monorepo dependencies
+- Pushing to a registry
+
+**What it does:**
+- Writes Dockerfiles and builds multi-stage images
+- Pins digests and pushes to the registry
+- Verifies the running build matches the intended digest
+
+**What it outputs:**
+- Built image and digest
+- Push confirmation
+- A common-failures checklist
+
+---
+
+### db-specialist (Sonnet)
+
+**When to use:**
+- Schema changes and migrations
+- ORM operations and data-integrity gotchas
+
+**What it does:**
+- Designs schema changes and writes migrations
+- Knows generate-vs-migrate semantics
+- Never pushes schema straight to production, never casts the client to any
+
+**What it outputs:**
+- Migration files and a schema diff
+- Data-integrity notes
+
+---
+
+### cqrs-specialist (Sonnet)
+
+**When to use:**
+- Event-driven and CQRS work
+- Outbox commands, idempotent projectors, read models
+
+**What it does:**
+- Writes command/outbox handlers and projectors
+- Enforces idempotency
+- Never catches errors inside a transaction boundary
+
+**What it outputs:**
+- Command and projector code
+- Idempotency keys and event-flow notes
+
+---
+
+### e2e-tester (Sonnet)
+
+**When to use:**
+- End-to-end and smoke testing of critical user paths
+- Cross-viewport verification
+
+**What it does:**
+- Drives a browser (with a Playwright MCP when available)
+- Runs page sweeps and smoke flows, captures screenshots
+
+**What it outputs:**
+- Pass/fail per flow
+- Screenshots and a blocking-issues table
+
+---
+
+### watchdog (Sonnet)
+
+**When to use:**
+- Large refactors and multi-agent runs
+- Drift detection in parallel with implementation
+
+**What it does:**
+- Monitors for security, breaking-change, dependency, and quality regressions
+- Recommends pausing on critical drift (read-only, never edits)
+
+**What it outputs:**
+- Severity-tagged drift alerts (CRITICAL / WARNING / INFO)
+
+---
+
+### evaluator (Opus)
+
+**When to use:**
+- Scoring another agent's output against an explicit rubric before acceptance
+- The critic half of the evaluator-optimizer loop
+
+**What it does:**
+- Judges work against acceptance criteria, adversarially and read-only
+- Never produces or fixes the work, only scores it
+
+**What it outputs:**
+- A PASS / NEEDS_WORK / FAIL verdict
+- Per-criterion gaps and a confidence level
+
+---
+
 ## Model Selection Rationale
 
 ### Opus (Strategic)

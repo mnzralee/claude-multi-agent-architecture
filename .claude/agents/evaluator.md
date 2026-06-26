@@ -1,6 +1,6 @@
 ---
 name: evaluator
-description: Use as a read-only critic to score another agent's output against an explicit rubric before it is accepted. Pairs with the evaluator-optimizer loop and the /verify skill. Returns a pass/fail verdict per criterion with concrete, actionable gaps. Never edits; judgment only.
+description: Use as a read-only critic to score another agent's output against an explicit rubric before it is accepted. Pairs with the evaluator-optimizer loop and the verification-before-completion skill. Returns a pass/fail verdict per criterion with concrete, actionable gaps. Never edits; judgment only.
 tools: Read, Grep, Glob, Bash
 model: opus
 ---
