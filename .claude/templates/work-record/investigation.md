@@ -8,19 +8,19 @@ Use this template to document the investigation and discovery process.
 ### Investigation & Discovery
 
 **Initial Hypothesis:**
-[What we initially thought might be the cause/approach]
+[What I initially thought might be the cause/approach]
 
 **Investigation Steps:**
-1. [First thing checked] - [What we found]
-2. [Second thing checked] - [What we found]
-3. [Third thing checked] - [What we found]
+1. [First thing checked] - [What I found]
+2. [Second thing checked] - [What I found]
+3. [Third thing checked] - [What I found]
 
 **Dead Ends:**
 [Optional - document approaches that didn't work]
 - Tried [approach] - Didn't work because [reason]
 
 **Key Discovery:**
-[The "aha!" moment - what we realized that unlocked the solution]
+[The "aha!" moment - what I realized that unlocked the solution]
 
 **Root Cause:** (for bugs)
 [Technical explanation of why the problem occurred]

@@ -7,7 +7,7 @@ Use this template to document the problem or challenge being addressed.
 ```markdown
 ### The Challenge: [Problem Title]
 
-**What We Faced:**
+**What I Faced:**
 [Detailed description of the problem, bug, or feature requirement. Include:
 - What was happening (symptoms)
 - What was expected instead

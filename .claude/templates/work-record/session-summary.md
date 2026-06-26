@@ -7,8 +7,8 @@ Use this template to conclude each session.
 ```markdown
 ### Session Summary
 
-**Objective:** [What we set out to do]
-**Outcome:** [What we achieved]
+**Objective:** [What I set out to do]
+**Outcome:** [What I achieved]
 **Key Insight:** [Most important thing learned]
 **Status:** COMPLETE / IN PROGRESS / BLOCKED
 
@@ -27,8 +27,8 @@ Use this template to conclude each session.
 
 **Challenge 1: [Title]**
 - **Problem:** [What went wrong]
-- **Resolution:** [How we fixed it]
-- **Learning:** [What we learned from it]
+- **Resolution:** [How I fixed it]
+- **Learning:** [What I learned from it]
 
 ---
 

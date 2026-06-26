@@ -74,7 +74,7 @@ Make it actionable and memorable.]
 ## Guidelines
 
 ### The Day in Brief
-- Write in first person plural ("We accomplished...")
+- Write in first person singular ("I accomplished...")
 - Keep it high-level but meaningful
 - Should be understandable without reading session details
 

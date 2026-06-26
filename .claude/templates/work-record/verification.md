@@ -7,7 +7,7 @@ Use this template to document how the solution was verified.
 ```markdown
 ### Verification & Testing
 
-**How We Verified:**
+**How I Verified:**
 [Description of verification approach and methodology]
 
 **Test Results:**
@@ -22,7 +22,7 @@ Use this template to document how the solution was verified.
 - [ ] [Scenario 3] - Not yet verified (reason)
 
 **Regression Check:**
-[What we checked to ensure we didn't break anything else]
+[What I checked to ensure I didn't break anything else]
 
 **Edge Cases Tested:**
 - [Edge case 1]: [Result]

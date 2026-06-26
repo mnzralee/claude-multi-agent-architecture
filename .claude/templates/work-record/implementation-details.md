@@ -29,7 +29,7 @@ const new = doThingNewWay();
 |-----------|-------|------|-----------|
 | [e.g., Simplicity vs flexibility] | Simple | Flexible | Only one use case currently |
 
-#### What Surprised Us
+#### What Surprised Me
 - [Unexpected finding 1, things that weren't obvious from the plan]
 - [Unexpected finding 2]
 
