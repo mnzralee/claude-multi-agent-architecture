@@ -27,16 +27,16 @@ mkdir -p /your/project/docs/workrecords
 
 Then open `CLAUDE.md` and `AGENTS.md` and replace the `[CUSTOMIZE]` placeholders (project name, stack, services). Adjust `.claude/settings.json` permissions, and copy `.claude/settings.local.json.example` to `.claude/settings.local.json` for your machine-specific allowances.
 
-### Option B: install as a Claude Code plugin
+### Option B: install as a Claude Code plugin (experimental)
 
-This repo ships a plugin manifest (`.claude-plugin/plugin.json`) and a marketplace (`.claude-plugin/marketplace.json`). Add the marketplace, then install:
+The repo also ships a plugin manifest (`.claude-plugin/plugin.json`) and a single-plugin marketplace (`.claude-plugin/marketplace.json`), which contribute the agents, skills, and hooks without copying files into your project:
 
 ```
 /plugin marketplace add mnzralee/claude-multi-agent-architecture
 /plugin install claude-multi-agent-architecture
 ```
 
-The plugin contributes the agents, skills, and hooks without copying files into your repo.
+Note: the plugin declares its component paths via `plugin.json`. Plugin discovery has shifted across Claude Code versions, so if a freshly installed plugin shows no agents on your version, use the scaffold copy in Option A (the proven path). The enforcement rules and `CLAUDE.md` are delivered by the scaffold, not the plugin.
 
 ## Quick use
 
@@ -101,7 +101,7 @@ Swarm, council, watchdog, evaluator-optimizer, and the five Anthropic primitives
 
 ## Conforms to the current Claude Code spec
 
-Subagents are flat `.claude/agents/<name>.md` files with YAML frontmatter (`name`, `description`, `tools`, `model`). Skills are `.claude/skills/<name>/SKILL.md`. Hooks are real `settings.json` event arrays (`PreToolUse`, `PostToolUse`, `Stop`) that read their event from stdin. Reasoning depth uses `/effort`, not deprecated trigger words. The kit is packaged as both a scaffold and a plugin.
+Subagents are flat `.claude/agents/<name>.md` files with YAML frontmatter (`name`, `description`, `tools`, `model`). Skills are `.claude/skills/<name>/SKILL.md`. Hooks are real `settings.json` event arrays (`PreToolUse`, `PostToolUse`, `Stop`) that read their event from stdin. Reasoning depth uses `/effort`, not deprecated trigger words. The kit ships as a clone-and-copy scaffold (the proven path), plus an experimental plugin manifest.
 
 ## Documentation
 
