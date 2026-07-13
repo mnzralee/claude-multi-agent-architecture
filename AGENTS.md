@@ -36,6 +36,10 @@
 - **Single writer, many readers.** Parallel agents may read/analyze/review; exactly one agent mutates files or commits at a time.
 - **Prove with artifacts.** "Done" means a commit SHA, test output, or a passing check, not a narration.
 
+## Operating standard (doctrine, every model tier)
+
+Every model, whatever its capability tier, honors one behavioral contract in this repo: lead with the outcome, prove completion with artifacts, decide depth-first rather than from a hunch, do not stop early, do the simplest thing that works well, and disclose every honest finding uncapped. For Claude Code, the full doctrine and its enforcement (an always-loaded rule, a launch-time system-prompt wrapper, an inert-by-default verification hook) live at `.claude/standards/OPERATING-STANDARD.md`; see [docs/OPERATING-STANDARD.md](docs/OPERATING-STANDARD.md). Tools without an equivalent mechanism should still hold every model to this same six-point contract, via whatever system-prompt or repo-instructions surface that tool exposes.
+
 ## Agent Roles
 
 | Role | Responsibility | Model Tier |
