@@ -7,9 +7,10 @@ A production-grade, spec-conformant starter kit for building serious software wi
 ## What you get
 
 - **19 specialized subagents** in spec-conformant flat files (`.claude/agents/<name>.md`), each with explicit model routing and a minimal tool set: architect, researcher, supervisor, prompt-writer, backend-impl, frontend-impl, infra-impl, docker-deploy, db-specialist, cqrs-specialist, tester, e2e-tester, reviewer, debugger, security, code-quality-auditor, evaluator, watchdog, work-recorder.
-- **18 enforcement rules** in `.claude/rules/`, including the evidence-driven `ai-agent-engineering` discipline, the `ai-orchestration-decision-gate`, clean architecture, TDD, complexity limits, anti-entropy, security standards, and the untrusted-content boundary.
+- **19 enforcement rules** in `.claude/rules/`, including the evidence-driven `ai-agent-engineering` discipline, the `ai-orchestration-decision-gate`, clean architecture, TDD, complexity limits, anti-entropy, security standards, the untrusted-content boundary, and the portable `operating-standard`.
+- **An Operating Standard**: a single doctrine document that makes every model tier honor the same communication contract, completion bar, and depth-of-analysis, applied at launch (`.claude/bin/claude-standard`) and in-session (`.claude/rules/operating-standard.md`) so it can't be skipped. See [docs/OPERATING-STANDARD.md](docs/OPERATING-STANDARD.md).
 - **18 skills** invoked with `/name`: plan-feature, multi-agent-orchestration, review-board (the multi-wave Software Engineering Review Board), evaluator-optimizer, ralph-loop, tdd-workflow, commit, pr, review, systematic-debugging, verification, and more.
-- **Real, executable hooks**: a `PreToolUse` file guard that blocks secret writes, a `PostToolUse` auto-format pass, and an opt-in `Stop` checkpoint. Wired correctly so they actually fire.
+- **Real, executable hooks**: a `PreToolUse` file guard that blocks secret writes, a `PostToolUse` auto-format pass, an inert-by-default `Stop` verification gate that enforces the evidence-backed-completion bar, and an opt-in `Stop` checkpoint. Wired correctly so they actually fire, and adversarially tested for loop-safety and fail-open behavior. See [docs/HARNESS-VERIFICATION.md](docs/HARNESS-VERIFICATION.md).
 - **A context/ pack, governance gates, work-record templates, and a review-board prompt** for multi-agent plan validation.
 - **Cross-tool `AGENTS.md`** so the same conventions carry to Cursor, Codex, Gemini, and others.
 
@@ -74,8 +75,10 @@ claude-multi-agent-architecture/
     settings.local.json.example # personal/machine overrides (gitignored)
     agents/<name>.md            # 19 subagents, flat files, YAML frontmatter
     skills/<name>/SKILL.md      # 18 skills
-    rules/<name>.md             # 18 enforcement rules
-    hooks/                      # file-guard.py, auto-format.py, checkpoint.sh/.ps1, hooks.json
+    rules/<name>.md             # 19 enforcement rules
+    standards/OPERATING-STANDARD.md  # portable doctrine, every model tier
+    bin/claude-standard(.ps1)   # launch wrapper: appends the standard to the system prompt
+    hooks/                      # file-guard.py, auto-format.py, verification-gate.py, checkpoint.sh/.ps1, hooks.json
     prompts/review-board.md     # multi-agent review board
     workflows/feature-flow.example.js
     governance/quality-gates.json
@@ -87,6 +90,8 @@ claude-multi-agent-architecture/
     WORKFLOW-PATTERNS.md        # orchestration patterns, diagrammed
     MODEL-ROUTING.md            # per-agent model tiers and cost rationale
     SECURITY.md                 # permission hygiene + untrusted-content posture
+    OPERATING-STANDARD.md       # doctrine vs. capability, and how to apply it
+    HARNESS-VERIFICATION.md     # verify agents/hooks/rules actually load before trusting them
     CUSTOMIZATION.md            # how to adapt for your project
     workrecords/                # your session records land here
 ```
@@ -94,6 +99,10 @@ claude-multi-agent-architecture/
 ## Model routing
 
 Per-agent model selection is the biggest cost lever. The kit routes frontier models (`opus`) to design, security, and critique; the balanced model (`sonnet`) to implementation, testing, and review; and the fast model (`haiku`) to search, prompt-writing, and documentation. See [docs/MODEL-ROUTING.md](docs/MODEL-ROUTING.md).
+
+## Operating standard: same doctrine, every model tier
+
+Routing cheaper models to cheaper work saves money, but it surfaces a real gap: model tiers differ in conduct as much as capability. A fast or balanced model is more likely to declare a task done without running the test, or stop mid-task to ask something it could have resolved itself. That gap is not intelligence, it is doctrine, and doctrine is fully portable. The kit ships one behavioral contract (`.claude/standards/OPERATING-STANDARD.md`) applied two ways so it can't be skipped: at launch via `.claude/bin/claude-standard`, and in-session via the always-loaded `.claude/rules/operating-standard.md`. An inert-by-default `Stop` hook (`.claude/hooks/verification-gate.py`) enforces the evidence-backed-completion bar mechanically, adversarially tested for loop-safety and fail-open behavior before it was wired in. See [docs/OPERATING-STANDARD.md](docs/OPERATING-STANDARD.md).
 
 ## Orchestration patterns
 
@@ -109,6 +118,8 @@ Subagents are flat `.claude/agents/<name>.md` files with YAML frontmatter (`name
 - [docs/AGENT-GUIDE.md](docs/AGENT-GUIDE.md) - when to use which agent
 - [docs/WORKFLOW-PATTERNS.md](docs/WORKFLOW-PATTERNS.md) - orchestration patterns
 - [docs/MODEL-ROUTING.md](docs/MODEL-ROUTING.md) - model tiers and cost
+- [docs/OPERATING-STANDARD.md](docs/OPERATING-STANDARD.md) - doctrine vs. capability, and the portable behavioral contract
+- [docs/HARNESS-VERIFICATION.md](docs/HARNESS-VERIFICATION.md) - verify your agents, hooks, and rules actually load
 - [docs/SECURITY.md](docs/SECURITY.md) - security posture
 
 ## License
