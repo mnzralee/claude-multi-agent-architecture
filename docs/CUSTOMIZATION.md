@@ -109,6 +109,30 @@ paths:
 State the principle, what it requires, what it forbids, and how to verify.
 ```
 
+## Global doctrine, local specialists
+
+If you work across more than one project, you will hit a scoping question: does a piece of configuration belong in this project only, or in every session on the machine? Claude Code has two tiers for this: the **project tier** (`.claude/` inside a repo, loads only there) and the **user tier** (`~/.claude/`, loads in every session, everywhere). Putting everything in one tier is the mistake. Split by reach instead.
+
+**Doctrine is universal; put it at the user tier.** The Operating Standard (`.claude/standards/OPERATING-STANDARD.md` and its loader `.claude/rules/operating-standard.md`) is not specific to this codebase. Conduct, the communication contract, the completion bar, the depth-first discipline, applies to any project you work on. Copy it once to `~/.claude/`, then keep a single source of truth by symlinking the global copy back to the versioned one in your kit repo, so the two can never drift:
+
+```bash
+# macOS / Linux
+ln -sf /path/to/claude-multi-agent-architecture/.claude/standards/OPERATING-STANDARD.md \
+       ~/.claude/standards/OPERATING-STANDARD.md
+ln -sf /path/to/claude-multi-agent-architecture/.claude/rules/operating-standard.md \
+       ~/.claude/rules/operating-standard.md
+
+# Windows (PowerShell, run as Administrator, or enable Developer Mode for unprivileged symlinks)
+New-Item -ItemType SymbolicLink -Path "$HOME\.claude\standards\OPERATING-STANDARD.md" `
+  -Target "C:\path\to\claude-multi-agent-architecture\.claude\standards\OPERATING-STANDARD.md"
+```
+
+Launch with the standard applied everywhere using `.claude/bin/claude-standard` (or the `.ps1` variant) pointed at your global copy, or alias it in your shell profile so every `claude` invocation, in any directory, carries the doctrine in its system prompt.
+
+**Specialist agents are project-specific; keep them at the project tier.** Your `.claude/agents/*.md` roles know this project's services, stack, and namespaces. Making them global would surface them inside unrelated projects, where they are noise at best and actively wrong at worst (a `db-specialist` tuned to one project's schema conventions giving advice inside a project with a different database entirely). Copy or adapt agents per project, per the "Customizing agents" section above.
+
+Global conduct, local expertise. Standardize the behavior everywhere; scope the knowledge to where it is true. See [docs/OPERATING-STANDARD.md](OPERATING-STANDARD.md) for why this split matters and [docs/HARNESS-VERIFICATION.md](HARNESS-VERIFICATION.md) for how to confirm both tiers actually loaded.
+
 ## Cross-session state
 
 Claude Code sessions are ephemeral. Persist progress in JSON under `.claude/progress/` so a new session (or the `work-recorder`) can resume. The kit ships `current-task.json.example`; copy it to `current-task.json` (gitignored) and adapt:
@@ -163,5 +187,7 @@ To drop an agent, skill, or rule you do not need, delete its file (and remove re
 
 - `docs/AGENT-GUIDE.md`, when to use which agent
 - `docs/MODEL-ROUTING.md`, model tiers and cost
+- `docs/OPERATING-STANDARD.md`, doctrine vs. capability and the portable behavioral contract
+- `docs/HARNESS-VERIFICATION.md`, verify your agents, hooks, and rules actually load
 - `docs/SECURITY.md`, permission hygiene and the untrusted-content boundary
 - `docs/WORKFLOW-PATTERNS.md`, orchestration patterns

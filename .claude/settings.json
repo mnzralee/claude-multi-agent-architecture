@@ -1,5 +1,5 @@
 {
-  "description": "claude-multi-agent-architecture: base project settings. Safe-by-default permissions, real executable hooks, no secrets. Per-agent model and tool scoping live in .claude/agents/<name>.md frontmatter. Personal and machine-specific overrides go in settings.local.json (gitignored).",
+  "description": "claude-multi-agent-architecture: base project settings. Safe-by-default permissions, real executable hooks, no secrets. Per-agent model and tool scoping live in .claude/agents/<name>.md frontmatter. Personal and machine-specific overrides go in settings.local.json (gitignored). The Stop verification-gate hook is wired but inert until VERIFY_GATE=1 is set (see .claude/standards/OPERATING-STANDARD.md).",
   "permissions": {
     "allow": [
       "Read",
@@ -83,6 +83,17 @@
           {
             "type": "command",
             "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hooks/auto-format.py\""
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hooks/verification-gate.py\""
           }
         ]
       }
