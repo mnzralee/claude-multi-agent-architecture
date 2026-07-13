@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+# claude-standard - launch Claude Code with the Operating Standard applied,
+# so any model tier (frontier | balanced | fast) runs to the same contract.
+#
+# The standard is appended to the system prompt for the whole session and
+# inherited by forked subagents. The in-session rule
+# (.claude/rules/operating-standard.md) is a fallback for sessions launched
+# without this wrapper.
+#
+# Usage:
+#   .claude/bin/claude-standard                    # interactive, default model
+#   .claude/bin/claude-standard --model opus       # interactive on a specific tier
+#   .claude/bin/claude-standard -p "audit svc-x"   # headless / print mode
+#   VERIFY_GATE=1 .claude/bin/claude-standard      # also enable the Stop verification gate
+#
+# All extra args are passed straight through to `claude`.
+set -euo pipefail
+
+# Resolve the repo root from this script's location (.claude/bin -> repo root).
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+STANDARD="$REPO_ROOT/.claude/standards/OPERATING-STANDARD.md"
+
+if [[ ! -f "$STANDARD" ]]; then
+  echo "claude-standard: operating standard not found at $STANDARD" >&2
+  exit 1
+fi
+
+if ! command -v claude >/dev/null 2>&1; then
+  echo "claude-standard: 'claude' CLI not on PATH" >&2
+  exit 1
+fi
+
+exec claude --append-system-prompt-file "$STANDARD" "$@"
