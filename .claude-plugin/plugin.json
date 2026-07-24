@@ -1,6 +1,6 @@
 {
   "name": "claude-multi-agent-architecture",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "A production-grade, spec-conformant multi-agent Claude Code starter kit: 19 specialized subagents, 19 enforcement rules, 18 skills, real hooks, a portable cross-tier Operating Standard, and an evidence-driven orchestration discipline (prove-with-artifacts, single-writer/many-readers, workflow-vs-agent decision gate).",
   "author": {
     "name": "Manazir Ali"
@@ -18,7 +18,27 @@
     "clean-architecture",
     "context-engineering"
   ],
-  "agents": "./.claude/agents",
-  "skills": "./.claude/skills",
+  "agents": [
+    "./.claude/agents/architect.md",
+    "./.claude/agents/backend-impl.md",
+    "./.claude/agents/code-quality-auditor.md",
+    "./.claude/agents/cqrs-specialist.md",
+    "./.claude/agents/db-specialist.md",
+    "./.claude/agents/debugger.md",
+    "./.claude/agents/docker-deploy.md",
+    "./.claude/agents/e2e-tester.md",
+    "./.claude/agents/evaluator.md",
+    "./.claude/agents/frontend-impl.md",
+    "./.claude/agents/infra-impl.md",
+    "./.claude/agents/prompt-writer.md",
+    "./.claude/agents/researcher.md",
+    "./.claude/agents/reviewer.md",
+    "./.claude/agents/security.md",
+    "./.claude/agents/supervisor.md",
+    "./.claude/agents/tester.md",
+    "./.claude/agents/watchdog.md",
+    "./.claude/agents/work-recorder.md"
+  ],
+  "skills": "./.claude/skills/",
   "hooks": "./.claude/hooks/hooks.json"
 }
