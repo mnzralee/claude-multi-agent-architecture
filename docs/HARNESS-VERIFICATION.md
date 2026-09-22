@@ -1,6 +1,6 @@
 # Harness Verification
 
-How to confirm your Claude Code harness actually does what its files claim, before you trust it. Pairs with the Show Your Work Rule in [`.claude/rules/ai-agent-engineering.md`](../.claude/rules/ai-agent-engineering.md) and the [Operating Standard](OPERATING-STANDARD.md).
+How to confirm your Claude Code harness actually does what its files claim, before you trust it. Pairs with the Show Your Work Rule in [`.claude/standards/AI-AGENT-ENGINEERING.md`](../.claude/standards/AI-AGENT-ENGINEERING.md) and the [Operating Standard](OPERATING-STANDARD.md).
 
 ## The failure mode this guards against
 
@@ -39,7 +39,7 @@ If you fork or extend this kit, verify your additions the same way:
      awk '/^---$/{c++; next} c==1' "$f" | grep -q '^description:' || echo "MISSING description: $f"
    done
    ```
-4. **Do not auto-fix and move on.** If a role was intentionally documentation-only (a fork-dispatch pattern where the orchestrator reads the file as a spec rather than the framework dispatching it natively), converting it to a native subagent is a behavior change, not a typo fix. Flag it and let a human decide which model is intended, per the Agent Autonomy Boundaries in `ai-agent-engineering.md`.
+4. **Do not auto-fix and move on.** If a role was intentionally documentation-only (a fork-dispatch pattern where the orchestrator reads the file as a spec rather than the framework dispatching it natively), converting it to a native subagent is a behavior change, not a typo fix. Flag it and let a human decide which model is intended, per the Agent Autonomy Boundaries in `.claude/standards/AI-AGENT-ENGINEERING.md`.
 
 ## Check 2: settings keys are real, not inert
 

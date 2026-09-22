@@ -237,7 +237,7 @@ The Ralph-Loop pattern enforces this discipline by making `/clear` the iteration
 
 The lint-staged collapse risk: even when path-strings differ across services, **archetype filenames invoke shared lint hooks at commit time**. The lint-staged hook runs against the FULL staged index, not just the changed paths. When agent A and agent B stage different `container.ts` files concurrently, the lint hook runs once on the union and any lint or formatter change cascades into BOTH commits.
 
-This bit a real parallel orchestration during a multi-agent wave. The lesson (now codified in `.claude/rules/ai-agent-engineering.md`):
+This bit a real parallel orchestration during a multi-agent wave. The lesson (now codified in `.claude/standards/AI-AGENT-ENGINEERING.md`, with a one-line pointer in the always-loaded `.claude/rules/ai-agent-engineering.md`):
 
 **ALWAYS-Serialize List** (single-writer-per-repo at commit step):
 
