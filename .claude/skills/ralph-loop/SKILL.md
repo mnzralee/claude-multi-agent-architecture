@@ -28,13 +28,7 @@ Invoke `/ralph-loop` (or expect auto-surface) when:
 
 The single most important reframe: **"non-stop autonomous marathon" framings are structurally unviable** per industry consensus.
 
-Sources (the evidence base for this reframe):
-- Anthropic, "Effective context engineering for AI agents" (2026): context degrades past 50% utilisation
-- arxiv 2603.24755 "SlopCodeBench": empirical anti-pattern accumulation in long-horizon coding tasks
-- Alibaba Cloud, "From ReAct to Ralph Loop" (2025): 15-25% premature-completion rate without external verification chain
-- Stark Insider, "Claude Code Autonomous Coding Time Hack" (2026): the "Dumb Zone" past 100K-150K tokens
-- Anthropic Claude Code best-practices: `/clear` cadence canonical
-- m.academy, "Clear the context window in Claude Code"
+See `references/sources-and-citations.md` for the full evidence base and citation list supporting this reframe.
 
 The Ralph-Loop pattern reframes long-arc work as:
 
@@ -95,12 +89,7 @@ The user-auth column is non-negotiable: blanket session-start approval equals IN
 
 ## Section 5: Pre-Iteration Discipline (Brownfield-First)
 
-**Critical lesson**: brownfield audits keep finding work mostly done. Session map encodes intent; disk encodes reality; **disk wins**.
-
-The brownfield pattern fired three times in 24h on a long-arc run:
-1. Data adapters mostly already there
-2. A service was intentionally external-provider-only (its in-memory fallback was not a hazard)
-3. At arc onset, the deployment-environment integration, role grants, and state snapshot were ALL already authored
+**Critical lesson**: brownfield audits keep finding work mostly done. Session map encodes intent; disk encodes reality; **disk wins**. See `references/investigation-worked-examples.md` for the three real-world cases this fired on.
 
 Pre-iteration checklist (run every iteration, no exceptions):
 
@@ -332,15 +321,7 @@ Wave 3 synthesis dedups findings, resolves conflicts (the agent grounded in evid
 
 ## Section 13: Investigation-Caveats-Are-Load-Bearing
 
-When an investigation gives a recommendation AND a caveat, **the caveat constrains what the recommendation actually means**. The caveat that seemed parenthetical at planning often constrains the actual fix surface.
-
-Examples of the pattern:
-
-| Recommendation | Caveat | Discovered constraint |
-|---|---|---|
-| "Add the schema annotation" | "but don't enable the multi-schema preview feature" | The annotation requires the preview feature to even PARSE; the recommendation alone is infeasible |
-| "Hot-fix the cluster policy breach" | "the mesh strict-reject needs a 24h soak" | A marathon ending at partial-accept means the strict-mesh axis is post-marathon |
-| "Wire the data client into the billing service" | "it is intentionally external-provider-only in this environment" | The wiring would BREAK the intended configuration |
+When an investigation gives a recommendation AND a caveat, **the caveat constrains what the recommendation actually means**. The caveat that seemed parenthetical at planning often constrains the actual fix surface. See `references/investigation-worked-examples.md` for three worked examples of this pattern.
 
 **Rule**: re-read investigation findings AT EXECUTION TIME, not just at planning time. Caveats are load-bearing.
 
@@ -366,16 +347,7 @@ An auto-mode classifier can enforce this; pre-empting is cleaner UX. Each destru
 | Rollback path | Specific rollback command + recovery time objective |
 | Recovery if remediation fails | Worst-case recovery plan |
 
-Example surfacing pattern (a live environment mutation):
-
-```
-About to execute a LIVE environment mutation.
-Command: EXECUTE=1 <your deploy/apply command> --network <env>
-Scope: adds 3 resources to [CUSTOMIZE: target identifier] on [CUSTOMIZE: environment name]
-Rollback path: reverse-apply within a 2-min window OR snapshot rollback script
-Recovery time objective: 5 min if executed within 2 min of the original change; 45-60 min if downstream contamination has begun
-Type 'yes proceed with this mutation against the live <env>' to authorize.
-```
+See `references/gate-worked-examples.md` for a worked example of the surfacing pattern for a live environment mutation.
 
 ---
 
@@ -418,19 +390,7 @@ Per the Quality Lead findings from the review board:
 - Excluded items become an explicit DEFERRED list with reasoning
 - Honest naming: "YELLOW-7 baseline" (7 of 10 OWASP green; 3 deferred) is more credible than an aspirational "10/10"
 
-Canonical example: a multi-criterion engineering-shippable gate, where each criterion is a deterministic shell command exit code. The examples below assume an illustrative TypeScript / Playwright / curl stack; substitute your own:
-
-```bash
-# Each criterion is a deterministic shell command exit code.
-npx playwright test e2e/main-flow.spec.ts --grep "lands on /home" --reporter=line  # Criterion 1
-curl -sf -X POST $ENDPOINT/quote -d '{"name":"example"}' | jq -e '.tier and .amount'  # Criterion 2
-# ... more criteria
-# Marathon-shippable = all commands exit 0
-```
-
-Items explicitly NOT in 10/10 must be enumerated with reason:
-- "Criterion 9 partial: mesh in partial-accept, NOT strict-mesh; activation post-marathon at T+24h per soak window"
-- "Criterion 11 partial: observability stack deployed but dashboards may be empty until synthetic traffic generates"
+See `references/gate-worked-examples.md` for a canonical multi-criterion acceptance-gate example and worked examples of enumerating partial/deferred criteria with reasons.
 
 What 10/10 explicitly does NOT include:
 - External-dependency items (third-party verification provider, live payment keys, legal incorporation)
@@ -474,70 +434,7 @@ Voice: like a senior engineer explaining their day to a colleague over coffee. T
 
 ## Section 18: Hand-Off Document Template (Per Iteration Close)
 
-Template for `.claude/plans/handoff-iter-N-to-N+1.md`:
-
-```markdown
-# Hand-off: Iteration N to Iteration N+1
-
-> **Closed**: <iso-timestamp UTC>
-> **Closing iteration label**: <e.g., RL-ITER-5 = environment mutation execution>
-> **Opening iteration label**: <e.g., RL-ITER-6 = billing webhook wiring>
-> **Marathon elapsed**: <hh:mm of total budget>
-> **Orchestrator**: <agent name or "manual">
-
----
-
-## 1. Closing iteration commits + acceptance verification
-
-| # | Repo | Commit SHA | Subject | Acceptance command output |
-|---|---|---|---|---|
-
-**Pre-push gate state at iteration close**:
-- type-check: green / red (verbatim last line)
-- lint: green / red
-- test: <count> pass / <count> fail
-- em-dash check: green / red
-- git status: clean / NOT-clean
-
-## 2. Failed approaches + 5-Whys root cause
-
-| # | What was tried | Why it failed | 5-Whys root cause | What replaced it |
-|---|---|---|---|---|
-
-(If no failures: state "no failed approaches; iteration succeeded first try" explicitly.)
-
-## 3. Open work packages for next iteration
-
-| # | WP | Scope (1 sentence) | Files (planned_files declared upfront) | Acceptance command |
-|---|---|---|---|---|
-
-## 4. Persistent state file pointers
-
-| Artifact | Path |
-|---|---|
-| Marathon STATUS | `.claude/progress/current-module.json` |
-| Work record | `docs/workrecords/work-record-YYYY-MM-DD.md` |
-| Carry-forward register | `.claude/plans/roadmap-findings-register.md` |
-| 10/10 gate worksheet | `.claude/plans/10-CRITERION-GATE.md` |
-
-## 5. Cross-arc collision check
-
-| Check | Latest known state |
-|---|---|
-| Other arc's infra-ops HEAD | <sha7> "subject" |
-| Other arc's parent repo HEAD | <sha7> "subject" |
-| Same-file collision risk | <specific paths or "none"> |
-| Submodule pointer drift | <output> |
-
-## 6. Next-iteration prompt brief (for prompt-writer)
-
-> Task scope (one imperative sentence): <e.g., "Wire the payment port to the billing webhook route">
-> Specific file paths verified to exist (up to 10): <list>
-> Acceptance criteria as commands: <list>
-> Forbidden actions: NO push, NO work-record edit, NO destructive ops
-> Output contract: commit SHA + verbatim acceptance command stdout
-
-```
+Author a hand-off document at `.claude/plans/handoff-iter-N-to-N+1.md` at the close of every iteration. See `references/handoff-document-template.md` for the full template (closing commits + acceptance verification, failed approaches + 5-Whys, open work packages, persistent state file pointers, cross-arc collision check, next-iteration prompt brief).
 
 Length cap: under 250 lines. Deleted after the next iteration absorbs it.
 
@@ -588,36 +485,19 @@ Per Industry Research and pre-push gate discipline:
 - Per-iteration push for code work-package iterations; SKIP the gate via `--no-verify` only for infrastructure-mutation iterations (the gate verifies code, not environment state)
 - Each `--no-verify` must be logged in persistent state
 
-Pre-push gates catch **architectural framing errors at the cheapest layer**. A real insight from a long-arc run:
-
-> Pre-push gate 2 (the type-checker) caught `Property 'DATABASE_URL' does not exist on type '...'`. The billing service's env config genuinely does NOT expose DATABASE_URL because the service is intentionally external-provider-only per the investigation. My framing as a "completeness gap" was structurally wrong; the in-memory fallback in the container is the intentional design.
-
-The pre-push gate's type-check found this within seconds; the alternative was 30+ minutes debugging at deploy time. The 7-gate is not just a quality bar; it is a **structural-soundness oracle**.
+Pre-push gates catch **architectural framing errors at the cheapest layer**. See `references/gate-worked-examples.md` for a real-world case where this caught a structural framing error at the type-check layer. The 7-gate is not just a quality bar; it is a **structural-soundness oracle**.
 
 ---
 
 ## Section 21: "What Great Looks Like" Checklist
 
-Borrowed from the review-board Quality Lead:
-
-| Item | Description | Marathon scope | Post-marathon scope |
-|---|---|---|---|
-| Pre-flight script per iteration | Idempotent, exit 0 on green, validates environment | YES, mandatory per iteration | Production: scheduled timer unit |
-| Migration apply uses a dedicated CI/CD role | Not the human developer; separate from runtime role | OPTIONAL (per documented deferral) | Production: two-role pattern per CIS database benchmark |
-| Per-migration rollback SQL | Reverse-migration diff committed alongside | OPTIONAL during marathon | YES post-marathon |
-| Boot probes report to centralized observability | OTel span + metric on probe latency | PARTIAL (structured log only) | YES with OTel SDK |
-| Test data seeded via factories | Not hardcoded fixtures with embedded secrets | YES, mandatory | Production: factory pattern + contract tests |
-| Schema-per-service explicit search path | `SET search_path TO <schema>` in code (defense in depth) | OPTIONAL (URL parameter sufficient in a dev environment) | Production: explicit |
-| Pre-push gate parallel execution | Build-cache invalidation isolated per workspace | YES (existing build config) | Production: CI matrix |
-| Observability dashboards exist BEFORE deployment | Dashboards-as-code committed pre-deploy | YES (manifests in repo) | Production: GitOps |
+See `references/production-readiness-checklist.md` for the full marathon-scope vs. post-marathon-scope table (pre-flight script, migration CI/CD role, rollback SQL, observability, test factories, schema search path, gate parallelism, dashboards), borrowed from the review-board Quality Lead.
 
 ---
 
 ## Section 22: Investigation Patterns (What to Verify Before Acting)
 
-**The investigation reframe rule**: when an initial finding gives a recommendation, verify that the recommendation matches the actual access pattern.
-
-Case study: a morning audit reported "the signer needs the admin role" for a live environment mutation. The review-board Risk Mapper found the actual gate is an ownership check (`msg.sender == contractOwner` in the access library), NOT a role grant. The morning audit's framing would have led to: grant the role, attempt the mutation, get a revert at the ownership check.
+**The investigation reframe rule**: when an initial finding gives a recommendation, verify that the recommendation matches the actual access pattern. See `references/investigation-worked-examples.md` for the case study behind this rule.
 
 **Pre-mutation investigation checklist** (run before any cluster or environment mutation iteration):
 
@@ -694,6 +574,16 @@ If ANY answer is no, defer the marathon to a smaller focused arc. The cost of a 
 - `feedback_arc_session_numbering`: arc-day identity
 - `feedback_classifier_blocks_secrets_path_writes`: don't bypass the auto-mode classifier
 
+### Reference files (this skill's on-demand detail)
+
+Read these only when the situation calls for them; nothing in them changes the steps or gates above.
+
+- `references/sources-and-citations.md`: the full evidence base and citation list for every claim in this skill
+- `references/investigation-worked-examples.md`: the brownfield, caveats-are-load-bearing, and investigation-reframe case studies
+- `references/gate-worked-examples.md`: worked examples for the blast-radius surfacing pattern, the 10/10 acceptance gate, and the pre-push gate case study
+- `references/handoff-document-template.md`: the full per-iteration hand-off document template
+- `references/production-readiness-checklist.md`: the full "what great looks like" marathon-vs-post-marathon table
+
 ---
 
 ## Section 25: Quickstart Workflow
@@ -743,34 +633,7 @@ For a fresh long-arc invocation:
 
 ## Section 26: Sources and Citations
 
-All claims in this skill cite at least one source per `.claude/rules/deterministic-review.md` "deterministic evidence" rule.
-
-**Primary sources (industry consensus)**:
-- Anthropic, "Effective context engineering for AI agents" (2026): https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents
-- Anthropic, "Building Effective AI Agents" (2024-12-19): https://www.anthropic.com/research/building-effective-agents
-- Anthropic, "How we built our multi-agent research system": https://www.anthropic.com/engineering/multi-agent-research-system
-- Anthropic, "Best practices for Claude Code": https://code.claude.com/docs/en/best-practices
-- Cognition (Walden Yan), "Don't Build Multi-Agents": https://cognition.ai/blog/dont-build-multi-agents
-- Alibaba Cloud, "From ReAct to Ralph Loop" (2025): https://www.alibabacloud.com/blog/602799
-- Stark Insider, "Claude Code Autonomous Coding Time Hack" (2026): https://www.starkinsider.com/2026/05/claude-code-autonomous-coding-time-hack.html
-- Thomas Wiegold, "The Ralph Loop": https://thomas-wiegold.com/blog/ralph-loop-how-recursive-ai-agents-work/
-- Karpathy on context engineering: https://x.com/karpathy/status/1937902205765607626
-- OpenAI, "Introducing SWE-bench Verified": https://openai.com/index/introducing-swe-bench-verified/
-- m.academy, "Clear the context window in Claude Code": https://m.academy/lessons/clear-context-window-claude-code/
-
-**Academic sources**:
-- Spracklen et al., "We Have a Package for You! Package Hallucinations" (USENIX Security 2025): https://www.usenix.org/system/files/conference/usenixsecurity25/sec25cycle1-prepub-742-spracklen.pdf
-- "Importing Phantoms: Measuring LLM Package Hallucination Vulnerabilities" (arxiv 2501.19012): https://arxiv.org/html/2501.19012v1
-- "Boosting LLM Reasoning via Spontaneous Self-Correction" (arxiv 2506.06923): https://arxiv.org/pdf/2506.06923
-- SlopCodeBench (arxiv 2603.24755): https://arxiv.org/pdf/2603.24755
-
-**Tooling and patterns**:
-- Aider documentation, "Repository map": https://aider.chat/docs/repomap.html
-- Simon Willison, "2025: The year in LLMs": https://simonwillison.net/2025/Dec/31/the-year-in-llms/
-- Galileo, "7 AI Agent Failure Modes": https://galileo.ai/blog/agent-failure-modes-guide
-- GitHub, "Best practices for using Copilot coding agent": https://docs.github.com/copilot/how-tos/agents/copilot-coding-agent/best-practices-for-using-copilot-to-work-on-tasks
-- Linkerd Server policy: https://linkerd.io/2/features/server-policy/
-- Buoyant, mesh ramp documentation (cited via Linkerd docs)
+All claims in this skill cite at least one source per `.claude/rules/deterministic-review.md` "deterministic evidence" rule. See `references/sources-and-citations.md` for the full primary-source, academic-source, and tooling/pattern citation list.
 
 ---
 
