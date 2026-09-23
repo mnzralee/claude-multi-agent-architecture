@@ -272,46 +272,7 @@ Reference: Anthropic's Claude Code best practices identify TDD as the highest-le
 
 ## Work Recorder Integration
 
-The work-recorder agent maintains continuous documentation:
-
-### Event Types
-
-| Event | Trigger | Log Content |
-|-------|---------|-------------|
-| `track_start` | Supervisor begins track | Track name, WPs, team |
-| `wp_start` | Work package begins | WP ID, assigned agent |
-| `prompt_generated` | Prompt-writer completes | Target agent, token estimate, planned_files |
-| `impl_complete` | Implementation done | Files modified, commit SHA, verification |
-| `error_occurred` | Any failure | Error details, context |
-| `error_resolved` | Debugger fix applied | Root cause, resolution |
-| `wp_complete` | Work package done | Summary, metrics |
-| `track_complete` | All WPs done | Aggregate metrics |
-
-### Log Format
-
-```markdown
-## Track: [TRACK_NAME]
-
-### WP-XX: [Title]
-**Status:** COMPLETE
-**Agent:** backend-impl
-**Commit:** 8b1d4a2
-**Duration:** [estimate]
-
-**Files Modified:**
-| File | Change |
-|------|--------|
-| path/to/file.ts | [description] |
-
-**Verification:**
-- [x] npx tsc --noEmit, PASS
-- [x] <your codegen command>, PASS
-
-**Issues Encountered:**
-- [Issue description], RESOLVED via debugger
-
----
-```
+See `references/logging-and-metrics.md` for the work-recorder event-type table and the markdown log-format template it fills in after each significant action (Step 5 above).
 
 ## Quality Gates
 
@@ -395,15 +356,7 @@ The following files are ALWAYS serialization points. Never dispatch two agents t
 
 Every prompt-writer brief MUST include a `planned_files` array declaring the files the agent will modify. The supervisor computes the union across all parallel dispatches in the current wave. If the union contains duplicates, or if any file is on the Always-Serialize List and another in-flight agent also lists it, the supervisor serializes the conflicting dispatches.
 
-### Lesson Learned: archetype-file collisions
-
-Two safe parallel cases and one failure case make the rule concrete.
-
-Safe case: two agents dispatched in parallel across disjoint service trees (one service's internal endpoints versus another service's internal endpoints). Result: both succeeded, no conflicts, roughly 40% wall-clock saving over sequential. The `planned_files` union had an empty intersection.
-
-Failure case: two agents dispatched in parallel both targeted `container.ts` in different services with similar refactor intent. Result: the lint-staged hook ran against both pending changes concurrently, the lint cache invalidation collapsed mid-commit, and the orchestrator had to manually un-stage and re-serialize. The `planned_files` union contained `container.ts` in both services, but the orchestrator did not check.
-
-Generalization: even when the file paths differ by service, refactors that touch the same archetype file (`container.ts` in any service) tend to invoke the same downstream hooks. Treat archetype filenames as a soft serialization signal and dispatch one-at-a-time when in doubt. Cognition's principle holds: "single-agent architectures with intelligent scaffolding are more robust" for tightly coupled work (https://cognition.ai/blog/dont-build-multi-agents).
+See `references/parallel-dispatch-lessons-learned.md` for the worked example (two safe parallel cases and one failure case) that motivated this list, and the running lessons-learned log.
 
 ## Error Recovery Protocol
 
@@ -428,26 +381,7 @@ Generalization: even when the file paths differ by service, refactors that touch
 
 ## Metrics Collection
 
-Each supervisor collects:
-
-```json
-{
-  "track": "Track B",
-  "metrics": {
-    "workPackagesTotal": 4,
-    "workPackagesComplete": 4,
-    "subAgentInvocations": 12,
-    "promptsGenerated": 4,
-    "debuggerInvocations": 1,
-    "errorsEncountered": 1,
-    "errorsResolved": 1,
-    "filesModified": 5,
-    "linesChanged": 120,
-    "verificationsPassed": 8,
-    "redFlagRejects": 0
-  }
-}
-```
+See `references/logging-and-metrics.md` for the per-supervisor metrics JSON schema.
 
 ## Integration with Existing Skills
 
@@ -472,22 +406,7 @@ If you keep a `.claude/rules/` layer, point these at your own files. The skill d
 
 ## Example Invocation
 
-```markdown
-/multi-agent-orchestration
-
-## Plan: Legacy Model Cleanup
-
-### Tracks
-1. Track A - Schema Cleanup (parallel)
-2. Track B - Code Migration (sequential, depends on A)
-3. Track C - Verification (sequential, depends on B)
-
-### Execution
-[Orchestrator dispatches supervisors for each track]
-[Supervisors coordinate their support teams]
-[Work recorder maintains continuous log]
-[Final report aggregated by orchestrator]
-```
+See `references/example-invocation.md` for a worked example showing a full `/multi-agent-orchestration` invocation end to end.
 
 ---
 
@@ -533,50 +452,14 @@ When a live testing agent finds a bug:
 
 ### Common Infrastructure Commands
 
-The commands below assume a container-orchestrator deployment for illustration. [CUSTOMIZE: replace with your own deploy, log, and database-inspection commands. Substitute your namespace, service name, port, and credentials wherever a placeholder appears.]
-
-```bash
-# Port-forwards (die on pod restart, re-establish after deploy)
-kubectl port-forward -n <namespace> deploy/<service-a> <port>:<port> &
-kubectl port-forward -n <namespace> deploy/<service-b> <port>:<port> &
-
-# Quick rebuild cycle
-docker build --no-cache -t <svc>:<tag> -f <Dockerfile> . && \
-docker save <svc>:<tag> | <import into local cluster> && \
-kubectl set image deployment/<svc> <svc>=<svc>:<tag> -n <namespace> && \
-kubectl rollout status deployment/<svc> -n <namespace> --timeout=60s
-
-# Database state check
-kubectl exec -n <data-namespace> <db-pod> -- psql -U <db-user> -d <db-name> -c "<SQL>"
-
-# Service logs
-kubectl logs -n <namespace> deploy/<svc> --tail=10
-```
+See `references/live-testing-infrastructure-and-gotchas.md` for example port-forward, rebuild, and log-inspection commands (container-orchestrator flavored; adapt to your stack).
 
 ### Gotchas Learned from Production Testing
 
-These are real, transferable failure modes from live UI testing. The "Fix" column names the class of fix; adapt the specifics to your stack.
-
-| Issue | Symptom | Root Cause | Fix |
-|-------|---------|-----------|-----|
-| Port-forward dead | Connection refused | Pod restarted after deploy | Kill the stale forward and re-establish it |
-| Test driver not found | `Cannot find module` | Wrong working directory | Run from the app directory |
-| Stale build cache | Old component rendering | Hot-reload did not pick up the change | Clear the build cache and restart the dev server |
-| Route shadowing | Literal path resolves as "not found" | A parameterized route was matched before the literal one | Declare literal routes BEFORE parameterized catch-alls |
-| Enum in DB query | "Invalid value for argument" | Passing a sentinel like "ALL" into an enum filter | Skip the filter for "ALL"/empty values |
-| Auth token rejected | "Invalid token payload" | A claim in the token did not map to the field the service expected | Bridge the claim in the auth middleware |
-| API response shape | Page crash | The client expects a flat object, the API wraps it in a key | Unwrap in the fetch function |
-| Stale build artifact | A generated count is one behind | A recursive copy nested into an existing directory | Remove the target directory before copying |
-| Wrong database | "Table does not exist" | Different DB name or password than expected | Check the connection string inside the container |
+See `references/live-testing-infrastructure-and-gotchas.md` for the full table of transferable failure modes from live UI testing.
 
 ---
 
 ## Lessons Learned (running log)
 
-### Parallel dispatch boundaries
-
-- Two agents across two different service trees (one service's internal endpoints versus another's): parallel SUCCESS (roughly 40% wall-clock saving). The `planned_files` union had an empty intersection.
-- Two agents across two services' `container.ts` refactors: parallel FAILURE (lint-staged collapse). The `planned_files` union contained `container.ts` in both services; the archetype-filename collision invoked shared lint hooks.
-- Resolution: added the Always-Serialize List plus the `planned_files` declaration to the parallel dispatch protocol.
-
-(Add future lessons as new agentic failure modes are discovered.)
+See `references/parallel-dispatch-lessons-learned.md` for the full running log of parallel-dispatch successes and failures.
