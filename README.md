@@ -9,7 +9,7 @@ A production-grade, spec-conformant starter kit for building serious software wi
 - **19 specialized subagents** in spec-conformant flat files (`.claude/agents/<name>.md`), each with explicit model routing and a minimal tool set: architect, researcher, supervisor, prompt-writer, backend-impl, frontend-impl, infra-impl, docker-deploy, db-specialist, cqrs-specialist, tester, e2e-tester, reviewer, debugger, security, code-quality-auditor, evaluator, watchdog, work-recorder.
 - **19 enforcement rules** in `.claude/rules/`, including the evidence-driven `ai-agent-engineering` discipline, the `ai-orchestration-decision-gate`, clean architecture, TDD, complexity limits, anti-entropy, security standards, the untrusted-content boundary, `context-budget` (the kit's own always-loaded token target), and the portable `operating-standard`. The four largest rules (`operating-standard`, `ai-agent-engineering`, `anti-entropy`, `depth-first-impact-analysis`) ship as a lean always-loaded core with the full doctrine moved to `.claude/standards/`, so the kit holds its own context budget rather than just stating one.
 - **An Operating Standard**: a single doctrine document that makes every model tier honor the same communication contract, completion bar, and depth-of-analysis, applied at launch (`.claude/bin/claude-standard`) and in-session (`.claude/rules/operating-standard.md`) so it can't be skipped. See [docs/OPERATING-STANDARD.md](docs/OPERATING-STANDARD.md).
-- **18 skills** invoked with `/name`: plan-feature, multi-agent-orchestration, review-board (the multi-wave Software Engineering Review Board), evaluator-optimizer, ralph-loop, tdd-workflow, commit, pr, review, systematic-debugging, verification, and more.
+- **19 skills** invoked with `/name`: plan-feature, frontend-design-system (design-system-first UI with HIG-reasoned decisions), multi-agent-orchestration, review-board (the multi-wave Software Engineering Review Board), evaluator-optimizer, ralph-loop, tdd-workflow, commit, pr, review, systematic-debugging, verification, and more.
 - **Real, executable hooks**: a `PreToolUse` file guard that blocks secret writes, a `PostToolUse` auto-format pass, an inert-by-default `Stop` verification gate that enforces the evidence-backed-completion bar, and an opt-in `Stop` checkpoint. Wired correctly so they actually fire, and adversarially tested for loop-safety and fail-open behavior. See [docs/HARNESS-VERIFICATION.md](docs/HARNESS-VERIFICATION.md).
 - **A context/ pack, governance gates, work-record templates, and a review-board prompt** for multi-agent plan validation.
 - **Cross-tool `AGENTS.md`** so the same conventions carry to Cursor, Codex, Gemini, and others.
@@ -74,7 +74,7 @@ claude-multi-agent-architecture/
     settings.json               # safe-by-default permissions + real hooks
     settings.local.json.example # personal/machine overrides (gitignored)
     agents/<name>.md            # 19 subagents, flat files, YAML frontmatter
-    skills/<name>/SKILL.md      # 18 skills
+    skills/<name>/SKILL.md      # 19 skills
     rules/<name>.md             # 19 enforcement rules (4 are lean cores, see standards/)
     standards/                  # full doctrine for the 4 core-split rules, read on demand
       OPERATING-STANDARD.md          #   behavioral contract, every model tier

@@ -67,7 +67,7 @@ For verbose, wide investigation (sweeping many files, tracing call paths), dispa
 
 ## Skills
 
-Invoke with `/skill-name`. Key skills: `/plan-feature`, `/commit`, `/pr`, `/review`, `/review-board` (multi-wave SERB plan review), `/tdd-workflow`, `/systematic-debugging`, `/verification-before-completion`, `/multi-agent-orchestration`, `/evaluator-optimizer`, `/ralph-loop`, `/work-recording`. Full list in `.claude/skills/`.
+Invoke with `/skill-name`. Key skills: `/plan-feature`, `/frontend-design-system` (design system, brand and UI before screens), `/commit`, `/pr`, `/review`, `/review-board` (multi-wave SERB plan review), `/tdd-workflow`, `/systematic-debugging`, `/verification-before-completion`, `/multi-agent-orchestration`, `/evaluator-optimizer`, `/ralph-loop`, `/work-recording`. Full list in `.claude/skills/`.
 
 ## Work records and methodology
 
