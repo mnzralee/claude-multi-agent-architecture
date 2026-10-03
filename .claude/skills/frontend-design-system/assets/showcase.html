@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Design System Showcase</title>
+<!--
+  Living showcase starter (frontend-design-system skill).
+  1. Replace the PLACEHOLDER tokens in the "tokens" layer with the project's real tokens (phase 4).
+  2. Every component below uses semantic tokens only, so swapping tokens restyles everything.
+  3. Review in light and dark, LTR and RTL, and with reduced motion, then screenshot for the owner.
+  Placeholders are deliberately grayscale (design hierarchy in grayscale first; color is added as meaning).
+-->
+<style>
+@layer reset, tokens, base, components, showcase;
+
+@layer reset {
+  *, *::before, *::after { box-sizing: border-box; }
+  body, h1, h2, h3, h4, p, figure, ul, ol { margin: 0; }
+  ul[role="list"], ol[role="list"] { list-style: none; padding: 0; }
+  button, input, select, textarea { font: inherit; color: inherit; }
+  img, svg { display: block; max-inline-size: 100%; }
+}
+
+@layer tokens {
+  :root {
+    color-scheme: light;
+    /* PLACEHOLDER foundation: type */
+    --font-display: ui-serif, Georgia, serif;
+    --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+
+    /* PLACEHOLDER type roles: size / line height / weight / tracking */
+    --text-display: 3rem;    --leading-display: 1.05; --weight-display: 600; --tracking-display: -0.02em;
+    --text-h1: 2.25rem;      --leading-h1: 1.1;       --weight-h1: 600;      --tracking-h1: -0.015em;
+    --text-h2: 1.75rem;      --leading-h2: 1.2;       --weight-h2: 600;
+    --text-h3: 1.375rem;     --leading-h3: 1.3;       --weight-h3: 600;
+    --text-body: 1rem;       --leading-body: 1.55;    --weight-body: 400;
+    --text-body-sm: 0.875rem;--leading-body-sm: 1.5;
+    --text-label: 0.875rem;  --leading-label: 1.25;   --weight-label: 500;
+    --text-caption: 0.75rem; --leading-caption: 1.4;
+
+    /* Foundation: space (4 px base) */
+    --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem; --space-4: 1rem; --space-5: 1.25rem;
+    --space-6: 1.5rem; --space-8: 2rem; --space-10: 2.5rem; --space-12: 3rem; --space-16: 4rem;
+
+    /* PLACEHOLDER shape and size */
+    --radius-sm: 0.375rem; --radius-md: 0.625rem; --radius-lg: 1rem; --radius-full: 999px;
+    --size-control-sm: 2rem; --size-control-md: 2.5rem; --size-control-lg: 3rem;
+    --border-hairline: 1px; --ring-width: 2px; --ring-offset: 2px;
+
+    /* Motion */
+    --duration-fast: 120ms; --duration-base: 200ms; --duration-slow: 320ms;
+    --ease-enter: cubic-bezier(0.23, 1, 0.32, 1); --ease-exit: cubic-bezier(0.3, 0, 1, 1); --ease-move: cubic-bezier(0.77, 0, 0.175, 1);
+
+    /* PLACEHOLDER semantic color: light */
+    --surface-canvas: oklch(0.975 0 0);
+    --surface-raised: oklch(1 0 0);
+    --surface-sunken: oklch(0.945 0 0);
+    --surface-overlay: oklch(1 0 0);
+    --fg: oklch(0.2 0 0);
+    --fg-muted: oklch(0.45 0 0);
+    --fg-disabled: oklch(0.7 0 0);
+    --border-control: oklch(0.6 0 0);
+    --border-divider: oklch(0.9 0 0);
+    --action: oklch(0.25 0 0);
+    --action-hover: oklch(0.33 0 0);
+    --on-action: oklch(0.99 0 0);
+    --focus-ring: oklch(0.45 0.18 255);
+    --danger: oklch(0.52 0.19 27);    --on-danger: oklch(0.99 0 0); --danger-subtle: oklch(0.96 0.03 27);  --danger-text: oklch(0.45 0.17 27);
+    --success: oklch(0.5 0.13 150);   --on-success: oklch(0.99 0 0); --success-subtle: oklch(0.96 0.04 150); --success-text: oklch(0.42 0.11 150);
+    --warning: oklch(0.62 0.15 70);   --on-warning: oklch(0.2 0 0);  --warning-subtle: oklch(0.96 0.05 85);  --warning-text: oklch(0.45 0.11 60);
+    --info: oklch(0.5 0.14 250);      --on-info: oklch(0.99 0 0);    --info-subtle: oklch(0.96 0.03 250);    --info-text: oklch(0.43 0.13 250);
+    --shadow-raised: 0 1px 2px oklch(0 0 0 / 0.06), 0 1px 3px oklch(0 0 0 / 0.08);
+    --shadow-floating: 0 2px 4px oklch(0 0 0 / 0.06), 0 8px 24px oklch(0 0 0 / 0.1);
+    --shadow-overlay: 0 4px 8px oklch(0 0 0 / 0.08), 0 24px 48px oklch(0 0 0 / 0.16);
+  }
+  [data-theme="dark"] {
+    color-scheme: dark;
+    --surface-canvas: oklch(0.17 0 0);
+    --surface-raised: oklch(0.215 0 0);
+    --surface-sunken: oklch(0.145 0 0);
+    --surface-overlay: oklch(0.26 0 0);
+    --fg: oklch(0.95 0 0);
+    --fg-muted: oklch(0.72 0 0);
+    --fg-disabled: oklch(0.48 0 0);
+    --border-control: oklch(0.55 0 0);
+    --border-divider: oklch(0.3 0 0);
+    --action: oklch(0.93 0 0);
+    --action-hover: oklch(0.85 0 0);
+    --on-action: oklch(0.17 0 0);
+    --focus-ring: oklch(0.72 0.15 255);
+    --danger: oklch(0.65 0.17 27);    --on-danger: oklch(0.15 0 0); --danger-subtle: oklch(0.27 0.06 27);  --danger-text: oklch(0.8 0.1 27);
+    --success: oklch(0.68 0.13 150);  --on-success: oklch(0.15 0 0); --success-subtle: oklch(0.27 0.05 150); --success-text: oklch(0.82 0.1 150);
+    --warning: oklch(0.78 0.13 80);   --on-warning: oklch(0.15 0 0); --warning-subtle: oklch(0.28 0.05 80);  --warning-text: oklch(0.85 0.1 85);
+    --info: oklch(0.68 0.13 250);     --on-info: oklch(0.15 0 0);    --info-subtle: oklch(0.27 0.05 250);    --info-text: oklch(0.82 0.08 250);
+    --shadow-raised: 0 0 0 1px oklch(1 0 0 / 0.06);
+    --shadow-floating: 0 0 0 1px oklch(1 0 0 / 0.08), 0 8px 24px oklch(0 0 0 / 0.5);
+    --shadow-overlay: 0 0 0 1px oklch(1 0 0 / 0.1), 0 24px 48px oklch(0 0 0 / 0.6);
+  }
+  .reduce-motion, .reduce-motion * { --duration-fast: 1ms; --duration-base: 1ms; --duration-slow: 1ms; }
+  @media (prefers-reduced-motion: reduce) { :root { --duration-fast: 1ms; --duration-base: 1ms; --duration-slow: 1ms; } }
+}
+
+@layer base {
+  /* Sticky header must never cover focused or anchored content (WCAG 2.4.11). */
+  html { scroll-padding-block-start: 6rem; }
+  body {
+    font-family: var(--font-sans); font-size: var(--text-body); line-height: var(--leading-body);
+    color: var(--fg); background: var(--surface-canvas);
+    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3 { text-wrap: balance; }
+  p { text-wrap: pretty; max-inline-size: 65ch; }
+  ::selection { background: color-mix(in oklch, var(--focus-ring) 30%, transparent); }
+  :focus-visible { outline: var(--ring-width) solid var(--focus-ring); outline-offset: var(--ring-offset); }
+  .num { font-variant-numeric: tabular-nums; }
+}
+
+@layer components {
+  /* Button: one primitive, variant axes emphasis x size */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+    block-size: var(--size-control-md); padding-inline: var(--space-4);
+    font-size: var(--text-label); line-height: var(--leading-label); font-weight: var(--weight-label);
+    border-radius: var(--radius-md); border: var(--border-hairline) solid transparent; cursor: pointer;
+    transition: background-color var(--duration-fast) var(--ease-enter), transform var(--duration-fast) var(--ease-enter);
+    min-inline-size: 44px; white-space: nowrap;
+  }
+  .btn:active, .btn.is-active { transform: scale(0.97); }
+  .btn[data-size="sm"] { block-size: var(--size-control-sm); padding-inline: var(--space-3); border-radius: var(--radius-sm); }
+  .btn[data-size="lg"] { block-size: var(--size-control-lg); padding-inline: var(--space-5); font-size: var(--text-body); }
+  .btn[data-emphasis="primary"] { background: var(--action); color: var(--on-action); }
+  .btn[data-emphasis="secondary"] { background: var(--surface-raised); color: var(--fg); border-color: var(--border-control); }
+  .btn[data-emphasis="ghost"] { background: transparent; color: var(--fg); }
+  .btn[data-emphasis="danger"] { background: var(--danger); color: var(--on-danger); }
+  @media (hover: hover) and (pointer: fine) {
+    .btn[data-emphasis="primary"]:hover { background: var(--action-hover); }
+    .btn[data-emphasis="secondary"]:hover, .btn[data-emphasis="ghost"]:hover { background: var(--surface-sunken); }
+  }
+  .btn.is-hover[data-emphasis="primary"] { background: var(--action-hover); }
+  .btn.is-hover[data-emphasis="secondary"], .btn.is-hover[data-emphasis="ghost"] { background: var(--surface-sunken); }
+  .btn.is-focus { outline: var(--ring-width) solid var(--focus-ring); outline-offset: var(--ring-offset); }
+  .btn:disabled { cursor: not-allowed; opacity: 0.45; }
+  .btn[aria-busy="true"] { cursor: progress; }
+  .spinner { inline-size: 1em; block-size: 1em; border-radius: 50%; border: 2px solid currentColor; border-block-start-color: transparent; animation: spin 700ms linear infinite; }
+  @keyframes spin { to { transform: rotate(1turn); } }
+  .reduce-motion .spinner { animation-duration: 2s; }
+
+  /* Form field: visible label, hint, error tied by aria-describedby */
+  .field { display: grid; gap: var(--space-1); max-inline-size: 22rem; }
+  .field label { font-size: var(--text-label); font-weight: var(--weight-label); }
+  .field .hint { font-size: var(--text-caption); color: var(--fg-muted); }
+  .field .error { font-size: var(--text-caption); color: var(--danger-text); display: flex; gap: var(--space-1); align-items: center; }
+  .input {
+    block-size: var(--size-control-md); padding-inline: var(--space-3); font-size: 1rem;
+    background: var(--surface-raised); color: var(--fg);
+    border: var(--border-hairline) solid var(--border-control); border-radius: var(--radius-sm);
+  }
+  .input::placeholder { color: var(--fg-muted); }
+  .input[aria-invalid="true"] { border-color: var(--danger); border-width: 2px; }
+  .input:disabled { background: var(--surface-sunken); color: var(--fg-disabled); cursor: not-allowed; }
+  .input.is-focus { outline: var(--ring-width) solid var(--focus-ring); outline-offset: var(--ring-offset); }
+
+  /* Status: color plus icon plus words, never color alone */
+  .badge { display: inline-flex; align-items: center; gap: var(--space-1); padding: 0.125rem var(--space-2); border-radius: var(--radius-full); font-size: var(--text-caption); font-weight: var(--weight-label); }
+  .tone-danger { background: var(--danger-subtle); color: var(--danger-text); }
+  .tone-success { background: var(--success-subtle); color: var(--success-text); }
+  .tone-warning { background: var(--warning-subtle); color: var(--warning-text); }
+  .tone-info { background: var(--info-subtle); color: var(--info-text); }
+  .alert { display: grid; grid-template-columns: auto 1fr; gap: var(--space-3); padding: var(--space-4); border-radius: var(--radius-md); }
+  .alert strong { display: block; font-weight: 600; }
+
+  .card { background: var(--surface-raised); border-radius: var(--radius-lg); box-shadow: var(--shadow-raised); padding: var(--space-6); }
+  .card .card { border-radius: calc(var(--radius-lg) - var(--space-6) / 2); } /* concentric nesting */
+
+  .switch { position: relative; inline-size: 2.75rem; block-size: 1.5rem; border-radius: var(--radius-full); background: var(--border-control); border: 0; cursor: pointer; transition: background-color var(--duration-base) var(--ease-move); }
+  .switch::after { content: ""; position: absolute; inset-block-start: 0.1875rem; inset-inline-start: 0.1875rem; inline-size: 1.125rem; block-size: 1.125rem; border-radius: 50%; background: var(--surface-raised); transition: transform var(--duration-base) var(--ease-move); }
+  .switch[aria-checked="true"] { background: var(--action); }
+  .switch[aria-checked="true"]::after { transform: translateX(1.25rem); background: var(--on-action); }
+  [dir="rtl"] .switch[aria-checked="true"]::after { transform: translateX(-1.25rem); }
+
+  .skeleton { background: linear-gradient(90deg, var(--surface-sunken), var(--border-divider), var(--surface-sunken)); background-size: 200% 100%; border-radius: var(--radius-sm); animation: shimmer 1.4s linear infinite; }
+  @keyframes shimmer { to { background-position: -200% 0; } }
+  .reduce-motion .skeleton { animation: none; }
+
+  .empty { display: grid; justify-items: start; gap: var(--space-3); padding: var(--space-8); border: var(--border-hairline) dashed var(--border-control); border-radius: var(--radius-lg); }
+}
+
+@layer showcase {
+  .sc-bar { position: sticky; inset-block-start: 0; z-index: 10; display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; justify-content: space-between; padding: var(--space-3) var(--space-6); background: var(--surface-raised); border-block-end: var(--border-hairline) solid var(--border-divider); }
+  .sc-bar h1 { font-size: var(--text-h3); line-height: var(--leading-h3); font-weight: var(--weight-h3); }
+  .sc-controls { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+  main { padding: var(--space-8) var(--space-6) var(--space-16); display: grid; gap: var(--space-16); max-inline-size: 80rem; margin-inline: auto; }
+  section > h2 { font-size: var(--text-h2); line-height: var(--leading-h2); font-weight: var(--weight-h2); margin-block-end: var(--space-2); }
+  section > p { color: var(--fg-muted); margin-block-end: var(--space-6); }
+  .grid { display: grid; gap: var(--space-4); grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr)); }
+  .row { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
+  .stack { display: grid; gap: var(--space-6); }
+  .swatch { border-radius: var(--radius-md); overflow: hidden; background: var(--surface-raised); box-shadow: var(--shadow-raised); }
+  .swatch .chip { block-size: 4.5rem; border-block-end: var(--border-hairline) solid var(--border-divider); }
+  .swatch .meta { padding: var(--space-3); font-size: var(--text-caption); display: grid; gap: 0.125rem; }
+  .swatch code, .spec { font-family: var(--font-mono); font-size: var(--text-caption); color: var(--fg-muted); }
+  .pass { color: var(--success-text); } .fail { color: var(--danger-text); font-weight: 600; }
+  .type-row { display: grid; grid-template-columns: minmax(8rem, 12rem) 1fr; gap: var(--space-4); align-items: baseline; padding-block: var(--space-3); border-block-end: var(--border-hairline) solid var(--border-divider); }
+  .space-bar { block-size: 0.75rem; background: var(--action); border-radius: 2px; }
+  .label-cell { font-size: var(--text-caption); color: var(--fg-muted); min-inline-size: 6rem; }
+  .matrix { display: grid; grid-template-columns: 7rem repeat(6, max-content); gap: var(--space-3); align-items: center; overflow-x: auto; padding: var(--space-1); }
+  main > section { min-inline-size: 0; }
+  @media (max-width: 40rem) { .type-row { grid-template-columns: 1fr; } }
+}
+</style>
+</head>
+<body>
+<header class="sc-bar">
+  <h1>Design system showcase</h1>
+  <div class="sc-controls" role="group" aria-label="Preview settings">
+    <button class="btn" data-emphasis="secondary" data-size="sm" id="toggle-theme" aria-pressed="false">Dark theme</button>
+    <button class="btn" data-emphasis="secondary" data-size="sm" id="toggle-dir" aria-pressed="false">Right to left</button>
+    <button class="btn" data-emphasis="secondary" data-size="sm" id="toggle-motion" aria-pressed="false">Reduced motion</button>
+  </div>
+</header>
+
+<main>
+  <section aria-labelledby="color-h">
+    <h2 id="color-h">Color roles</h2>
+    <p>Semantic tokens with live WCAG contrast against the surface they sit on. Text pairs need 4.5:1, control boundaries and focus need 3:1, dividers are decorative.</p>
+    <div class="grid" id="swatches"></div>
+  </section>
+
+  <section aria-labelledby="type-h">
+    <h2 id="type-h">Typography</h2>
+    <p>Each role is a full row: family, size, line height, weight and tracking taken together.</p>
+    <div id="type-rows"></div>
+  </section>
+
+  <section aria-labelledby="space-h">
+    <h2 id="space-h">Space, radius and elevation</h2>
+    <p>Gaps inside a group are smaller than gaps between groups.</p>
+    <div class="stack">
+      <div class="stack" id="space-rows" style="gap: var(--space-2)"></div>
+      <div class="row">
+        <div class="card" style="border-radius: var(--radius-sm); padding: var(--space-4)">radius-sm</div>
+        <div class="card" style="border-radius: var(--radius-md); padding: var(--space-4)">radius-md</div>
+        <div class="card" style="padding: var(--space-4)">radius-lg</div>
+      </div>
+      <div class="row">
+        <div class="card" style="box-shadow: var(--shadow-raised)">raised</div>
+        <div class="card" style="box-shadow: var(--shadow-floating)">floating</div>
+        <div class="card" style="box-shadow: var(--shadow-overlay); background: var(--surface-overlay)">overlay</div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="btn-h">
+    <h2 id="btn-h">Button</h2>
+    <p>One primitive. Axes: emphasis and size. Default emphasis is secondary, because each view gets one primary action. Loading keeps the label and width.</p>
+    <div class="matrix" id="button-matrix"></div>
+    <div class="row" style="margin-block-start: var(--space-6)">
+      <button class="btn" data-emphasis="primary" data-size="sm">Small</button>
+      <button class="btn" data-emphasis="primary">Medium</button>
+      <button class="btn" data-emphasis="primary" data-size="lg">Large</button>
+    </div>
+  </section>
+
+  <section aria-labelledby="form-h">
+    <h2 id="form-h">Form field</h2>
+    <p>Visible label always; the placeholder is an example value; errors change hue, weight and words.</p>
+    <div class="grid">
+      <div class="field">
+        <label for="f1">Work email</label>
+        <input class="input" id="f1" type="email" inputmode="email" autocomplete="email" placeholder="name@company.com" aria-describedby="f1-hint">
+        <span class="hint" id="f1-hint">We send sign-in codes here.</span>
+      </div>
+      <div class="field">
+        <label for="f2">Focused</label>
+        <input class="input is-focus" id="f2" value="Forced focus ring">
+      </div>
+      <div class="field">
+        <label for="f3">Project name</label>
+        <input class="input" id="f3" value="Q3" aria-invalid="true" aria-describedby="f3-err">
+        <span class="error" id="f3-err"><span aria-hidden="true">&#9888;</span> Use at least 3 characters.</span>
+      </div>
+      <div class="field">
+        <label for="f4">Disabled</label>
+        <input class="input" id="f4" value="Not editable" disabled>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="status-h">
+    <h2 id="status-h">Status and feedback</h2>
+    <p>Color plus icon plus words, never color alone.</p>
+    <div class="stack">
+      <div class="row">
+        <span class="badge tone-success"><span aria-hidden="true">&#10003;</span> Paid</span>
+        <span class="badge tone-warning"><span aria-hidden="true">&#9650;</span> Due soon</span>
+        <span class="badge tone-danger"><span aria-hidden="true">&#10005;</span> Failed</span>
+        <span class="badge tone-info"><span aria-hidden="true">&#8505;</span> Draft</span>
+      </div>
+      <div class="alert tone-danger" role="alert">
+        <span aria-hidden="true">&#10005;</span>
+        <div><strong>That card was declined.</strong>Try another card or contact your bank. Nothing was charged.</div>
+      </div>
+      <div class="alert tone-success" role="status">
+        <span aria-hidden="true">&#10003;</span>
+        <div><strong>Invoice sent.</strong>We will email you when it is paid.</div>
+      </div>
+      <div class="row">
+        <span class="label-cell">Switch</span>
+        <button class="switch" role="switch" aria-checked="false" aria-label="Email notifications" id="demo-switch"></button>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="states-h">
+    <h2 id="states-h">Screen states</h2>
+    <p>Every data view designs loading, empty, error and populated, from one shared states set.</p>
+    <div class="grid">
+      <div class="card stack" style="gap: var(--space-3)" aria-busy="true" aria-label="Loading invoices">
+        <div class="skeleton" style="block-size: 1.25rem; inline-size: 60%"></div>
+        <div class="skeleton" style="block-size: 0.875rem"></div>
+        <div class="skeleton" style="block-size: 0.875rem; inline-size: 80%"></div>
+      </div>
+      <div class="empty">
+        <strong>No invoices yet</strong>
+        <span style="color: var(--fg-muted)">Create your first invoice to get paid.</span>
+        <button class="btn" data-emphasis="primary" data-size="sm">Create invoice</button>
+      </div>
+      <div class="card stack" style="gap: var(--space-3)">
+        <strong>Could not load invoices</strong>
+        <span style="color: var(--fg-muted)">The server did not respond. Your data is safe.</span>
+        <button class="btn" data-emphasis="secondary" data-size="sm">Try again</button>
+      </div>
+      <div class="card">
+        <div class="row" style="justify-content: space-between"><strong>Invoice 1042</strong><span class="num">$1,250.00</span></div>
+        <span style="color: var(--fg-muted); font-size: var(--text-body-sm)">Due 14 Oct</span>
+        <div class="card" style="margin-block-start: var(--space-4); padding: var(--space-3); box-shadow: none; background: var(--surface-sunken)">Nested card, concentric radius</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+(() => {
+  const root = document.documentElement;
+  const css = (name) => getComputedStyle(root).getPropertyValue(name).trim();
+
+  // Resolve any CSS color (hex, rgb, oklch, color-mix) to sRGB by painting it.
+  const ctx = Object.assign(document.createElement("canvas"), { width: 1, height: 1 }).getContext("2d", { willReadFrequently: true });
+  function rgba(color, under = "#fff") {
+    ctx.clearRect(0, 0, 1, 1);
+    ctx.fillStyle = under; ctx.fillRect(0, 0, 1, 1);
+    ctx.fillStyle = color; ctx.fillRect(0, 0, 1, 1);
+    const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
+    return [r, g, b];
+  }
+  const lum = (rgb) => rgb.map((v) => { v /= 255; return v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; })
+    .reduce((s, v, i) => s + v * [0.2126, 0.7152, 0.0722][i], 0);
+  function ratio(fgVar, bgVar) {
+    const bg = rgba(css(bgVar), root.dataset.theme === "dark" ? "#000" : "#fff");
+    const bgHex = "rgb(" + bg.join(",") + ")";
+    const fg = rgba(css(fgVar), bgHex);
+    const [a, b] = [lum(fg), lum(bg)].sort((x, y) => y - x);
+    return (a + 0.05) / (b + 0.05);
+  }
+
+  // [token, sits on, kind]  kind: text 4.5, ui 3, decor none
+  const ROLES = [
+    ["--surface-canvas", null, "surface"], ["--surface-raised", null, "surface"], ["--surface-sunken", null, "surface"],
+    ["--fg", "--surface-canvas", "text"], ["--fg-muted", "--surface-canvas", "text"], ["--fg-muted", "--surface-raised", "text"],
+    ["--border-control", "--surface-raised", "ui"], ["--border-divider", "--surface-raised", "decor"], ["--focus-ring", "--surface-canvas", "ui"],
+    ["--on-action", "--action", "text"], ["--on-danger", "--danger", "text"], ["--danger-text", "--danger-subtle", "text"],
+    ["--success-text", "--success-subtle", "text"], ["--warning-text", "--warning-subtle", "text"], ["--info-text", "--info-subtle", "text"],
+  ];
+  const FLOOR = { text: 4.5, ui: 3 };
+
+  function renderSwatches() {
+    const host = document.getElementById("swatches");
+    host.innerHTML = "";
+    for (const [token, on, kind] of ROLES) {
+      const fill = kind === "text" && on ? on : token;
+      const el = document.createElement("div");
+      el.className = "swatch";
+      let verdict = "";
+      if (on) {
+        const r = ratio(token, on);
+        const floor = FLOOR[kind];
+        verdict = floor
+          ? `<span class="${r >= floor ? "pass" : "fail"}">${r.toFixed(2)}:1 ${r >= floor ? "pass" : "below " + floor}</span>`
+          : `<span>${r.toFixed(2)}:1 decorative</span>`;
+      }
+      el.innerHTML = `
+        <div class="chip" style="background: var(${fill}); color: var(${token}); display:grid; place-items:center; font-weight:600">${kind === "text" ? "Aa" : ""}</div>
+        <div class="meta"><strong>${token.slice(2)}</strong>${on ? `<code>on ${on.slice(2)}</code>` : `<code>${css(token)}</code>`}${verdict}</div>`;
+      if (kind === "ui" || kind === "decor") el.querySelector(".chip").style.cssText = `background: var(${on}); border: 3px solid var(${token})`;
+      host.appendChild(el);
+    }
+  }
+
+  function renderType() {
+    const roles = ["display", "h1", "h2", "h3", "body", "body-sm", "label", "caption"];
+    const sample = { display: "Every detail has a reason", h1: "Invoices", h2: "Payment methods", h3: "Billing address",
+      body: "Send an invoice in under a minute. We remind your client and tell you the moment it is paid.",
+      "body-sm": "Paid invoices move to your archive after 30 days.", label: "Save changes", caption: "Updated 2 minutes ago" };
+    const host = document.getElementById("type-rows");
+    host.innerHTML = roles.map((r) => {
+      const size = css(`--text-${r}`), lead = css(`--leading-${r}`) || "normal", weight = css(`--weight-${r}`) || "400", track = css(`--tracking-${r}`) || "0";
+      const fam = r === "display" ? "var(--font-display)" : "var(--font-sans)";
+      return `<div class="type-row"><div><strong>${r}</strong><div class="spec">${size} / ${lead} / ${weight}</div></div>
+        <div style="font-family:${fam}; font-size:${size}; line-height:${lead}; font-weight:${weight}; letter-spacing:${track}">${sample[r]}</div></div>`;
+    }).join("");
+  }
+
+  function renderSpace() {
+    const steps = [1, 2, 3, 4, 5, 6, 8, 10, 12, 16];
+    document.getElementById("space-rows").innerHTML = steps.map((n) =>
+      `<div class="row"><span class="label-cell spec">space-${n} ${css(`--space-${n}`)}</span><div class="space-bar" style="inline-size: var(--space-${n})"></div></div>`).join("");
+  }
+
+  function renderButtons() {
+    const states = [["Default", ""], ["Hover", "is-hover"], ["Focus", "is-focus"], ["Pressed", "is-active"], ["Disabled", "disabled"], ["Loading", "loading"]];
+    const host = document.getElementById("button-matrix");
+    let html = `<span></span>` + states.map(([s]) => `<span class="label-cell">${s}</span>`).join("");
+    for (const emph of ["primary", "secondary", "ghost", "danger"]) {
+      html += `<span class="label-cell">${emph}</span>`;
+      for (const [, st] of states) {
+        const label = emph === "danger" ? "Delete project" : "Save changes";
+        if (st === "disabled") html += `<button class="btn" data-emphasis="${emph}" disabled>${label}</button>`;
+        else if (st === "loading") html += `<button class="btn" data-emphasis="${emph}" aria-busy="true"><span class="spinner" aria-hidden="true"></span>${label}</button>`;
+        else html += `<button class="btn ${st}" data-emphasis="${emph}" tabindex="-1">${label}</button>`;
+      }
+    }
+    host.innerHTML = html;
+  }
+
+  function renderAll() { renderSwatches(); renderType(); renderSpace(); renderButtons(); }
+
+  function bindToggle(id, apply) {
+    const btn = document.getElementById(id);
+    btn.addEventListener("click", () => {
+      const on = btn.getAttribute("aria-pressed") !== "true";
+      btn.setAttribute("aria-pressed", String(on));
+      apply(on);
+      renderAll();
+    });
+  }
+  bindToggle("toggle-theme", (on) => { root.dataset.theme = on ? "dark" : "light"; });
+  bindToggle("toggle-dir", (on) => { root.dir = on ? "rtl" : "ltr"; });
+  bindToggle("toggle-motion", (on) => { root.classList.toggle("reduce-motion", on); });
+  const sw = document.getElementById("demo-switch");
+  sw.addEventListener("click", () => sw.setAttribute("aria-checked", String(sw.getAttribute("aria-checked") !== "true")));
+  if (matchMedia("(prefers-color-scheme: dark)").matches) document.getElementById("toggle-theme").click();
+  renderAll();
+})();
+</script>
+</body>
+</html>
