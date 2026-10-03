@@ -265,6 +265,8 @@ export const useOrdersStore = create<OrdersState>((set) => ({
 
 ## UI/UX Standards
 
+Design decisions come before code. When the project has no approved design system yet, or a task adds a screen, a shared component or a visual change, run the `frontend-design-system` skill first (`.claude/skills/frontend-design-system/SKILL.md`) and build from its outputs: `design/DESIGN-SYSTEM.md` for tokens and reasons, `design/COMPONENTS.md` for the component inventory and states. Do not invent tokens or sibling components here.
+
 ### Component Library
 
 - Use the project's chosen component library exclusively (shadcn/ui by default).
